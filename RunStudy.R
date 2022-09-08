@@ -4,9 +4,9 @@ if (!file.exists(output.folder)){
 start<-Sys.time()
 # extra options for running -----
 # if you have already created the cohorts, you can set this to FALSE to skip instantiating these cohorts again
-create.exposure.cohorts<-TRUE
 create.outcome.cohorts<-TRUE
-create.profile.cohorts<-TRUE
+create.comorbidity.cohorts<-TRUE
+create.medication.cohorts<-TRUE
 
 # to run for just one exposure/ outcome pair
 run.as.test<-FALSE
@@ -65,14 +65,9 @@ concept_ancestor_db<-tbl(db, sql(paste0("SELECT * FROM ",
 # }
 
 # result table names ----
-cohortTableExposures<-paste0(cohortTableStem, "Exposures")
 cohortTableOutcomes<-paste0(cohortTableStem, "Outcomes")
-cohortTableComorbiditiestmp<-paste0(cohortTableStem, "Comorbiditiestmp")
-cohortTableComorbidities<-paste0(cohortTableStem, "Comorbidities")
-cohortTableCovid<-paste0(cohortTableStem, "Covid")
-cohortTableMedicationstmp<-paste0(cohortTableStem, "Medicationstmp")
+cohortTableComorbidity<-paste0(cohortTableStem, "Comorbidity")
 cohortTableMedications<-paste0(cohortTableStem, "Medications")
-cohortTableLargeScaleFeatures<-paste0(cohortTableStem, "LSF")
 
 # instantiate study cohorts ----
 info(logger, 'INSTANTIATING STUDY COHORTS')
@@ -80,42 +75,33 @@ source(here("1_InstantiateCohorts","InstantiateStudyCohorts.R"))
 info(logger, 'GOT STUDY COHORTS')
 
 # study cohorts ----
-# The study cohorts are various combinations of vaccination dose cohorts that have been instantiated
 
-# 1.	Persons who received at least one dose of vaccine (any brand).
-# 2.	Persons who completed full doses of vaccine (any brand).
-# 3.	Persons who received at least one dose of viral vector-based vaccines.
-# 4.	Persons who received at least one dose of mRNA vaccine. 
-# 5.	Persons who completed full doses of viral vector-based vaccines. (so called homologous cohort)
-# 6.	Persons who completed full doses of mRNA vaccine. 
-# 7.	Persons who received heterologous vaccines-people had viral vector-based vaccine as the 1st dose followed by mRNA as the 2nd dose. 
-
-study.cohorts<-bind_rows(
-  exposure.cohorts %>% 
-  select(id, name),
-  data.frame(
-  name=c("Any first-dose",
-  "Any full-dose",
-  "Viral vector first-dose",
-  "mRNA first-dose",
-  "Viral vector full-dose",
-  "mRNA full-dose",
-  "mRNA second-dose after viral vector first-dose")) %>% 
-  mutate(id=((max(exposure.cohorts$id)+1):c(max(exposure.cohorts$id)+7))))
-  
-
-# get earliest vaccine ----
-earliest.date<-exposure.cohorts_db %>% 
-  filter(cohort_definition_id!="301") %>% 
-  summarise(vax.start.date=min(cohort_start_date, na.rm=TRUE)) %>% 
-  collect() %>% pull() 
-earliest.date<-dmy(format(earliest.date, "%d/%m/%Y"))
-
-# get database end date -----
-db.end.date<-observation_period_db %>% 
-    summarise(max(observation_period_end_date, na.rm=TRUE)) %>% 
-    collect() %>%  pull()
-db.end.date<-dmy(format(db.end.date, "%d/%m/%Y"))
+# study.cohorts<-bind_rows(
+#   exposure.cohorts %>% 
+#   select(id, name),
+#   data.frame(
+#   name=c("Any first-dose",
+#   "Any full-dose",
+#   "Viral vector first-dose",
+#   "mRNA first-dose",
+#   "Viral vector full-dose",
+#   "mRNA full-dose",
+#   "mRNA second-dose after viral vector first-dose")) %>% 
+#   mutate(id=((max(exposure.cohorts$id)+1):c(max(exposure.cohorts$id)+7))))
+#   
+# 
+# # get earliest vaccine ----
+# earliest.date<-exposure.cohorts_db %>% 
+#   filter(cohort_definition_id!="301") %>% 
+#   summarise(vax.start.date=min(cohort_start_date, na.rm=TRUE)) %>% 
+#   collect() %>% pull() 
+# earliest.date<-dmy(format(earliest.date, "%d/%m/%Y"))
+# 
+# # get database end date -----
+# db.end.date<-observation_period_db %>% 
+#     summarise(max(observation_period_end_date, na.rm=TRUE)) %>% 
+#     collect() %>%  pull()
+# db.end.date<-dmy(format(db.end.date, "%d/%m/%Y"))
 
 # Run analysis ----
 info(logger, 'RUNNING ANALYSIS')
@@ -150,7 +136,7 @@ info(logger, paste0("Study took: ",
                               60,  x %% 60 %/% 1)))
 
 # # zip results
-print("Zipping results to output folder")
+print("Zipping results to results folder")
 unlink(paste0(output.folder, "/OutputToShare_", db.name, ".zip"))
 zipName <- paste0(output.folder, "/OutputToShare_", db.name, ".zip")
 

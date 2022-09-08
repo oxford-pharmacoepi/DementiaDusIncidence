@@ -23,7 +23,6 @@ library(rmarkdown)
 library(tableone)
 library(scales)
 library(forcats)
-library(epiR)
 library(RPostgres)
 library(cmprsk)
 library(mstate)
@@ -37,22 +36,27 @@ library(log4r)
 # the path to a folder where the results from this analysis will be saved
 # to set the location within the project with folder called "ouput, we can use: here("output")
 # but this file path could be set to somewhere else
-output.folder<-here("output")
+output.folder<-here("Results")
 
-# Set the name/ acronym for your database (to be used in the titles of reports, etc) -----
-db.name<-"....."
+# database metadata and connection details -----
+# The name/ acronym for the database
+db.name<-"..."
 
-# Specify OHDSI DatabaseConnector connection details  ------
-# set up the createConnectionDetails to connect to the database
-# see http://ohdsi.github.io/DatabaseConnector for more details
-connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = "....",
-                                                                server ="....", #eg "10.80...../mypostgres"
-                                                                user = "....",
-                                                                password = "....",
-                                                                port = "....",
-                                                                pathToDriver = "....")
+# database connection details
+server<-"..."
+user<-"..."
+password<- "..."
+port<-"..."
+host<-"..."
 
-
+# driver for DatabaseConnector
+downloadJdbcDrivers("...", here()) # if you already have this you can omit and change pathToDriver below
+connectionDetails <- createConnectionDetails(dbms = "...",
+                                             server =server,
+                                             user = user,
+                                             password = password,
+                                             port = port ,
+                                             pathToDriver = here())
 
 # Specify DBI connection details -----
 # In this study we also use the DBI package to connect to the database
@@ -61,12 +65,8 @@ connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = "....",
 
 db <- dbConnect("...")
 # eg for postgres 
-# db <- dbConnect(RPostgres::PostgreSQL(),
-#                 dbname = "....", #eg "mypostgres" (without the "10.80...../" used in DatabaseConnector)
-#                 port = "....",
-#                 host = "....", 
-#                 user = "....", 
-#                 password = "....")
+# db <- dbConnect(RPostgres::Postgres(), dbname = server_dbi, port = port, host = host, user = user,
+#                 password = password)
 
 
 
