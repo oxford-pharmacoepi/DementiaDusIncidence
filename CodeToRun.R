@@ -31,27 +31,30 @@ library(rms)
 library(glue)
 library(readr)
 library(log4r)
+library(CirceR)
+library(CohortGenerator)
 
 # Set output folder location -----
 # the path to a folder where the results from this analysis will be saved
 # to set the location within the project with folder called "ouput, we can use: here("output")
 # but this file path could be set to somewhere else
-output.folder<-here("Results")
+output.folder<-here("Results", db.name)
 
 # database metadata and connection details -----
 # The name/ acronym for the database
-db.name<-"..."
+db.name<-"CPRD_Aurum"
 
 # database connection details
-server<-"..."
-user<-"..."
-password<- "..."
-port<-"..."
-host<-"..."
+server     <- Sys.getenv("DB_SERVER_cdm_aurum_202106") # AURUM
+server_dbi <- Sys.getenv("DB_SERVER_cdm_aurum_202106_dbi") #AURUM
+user       <- Sys.getenv("DB_USER")
+password   <- Sys.getenv("DB_PASSWORD")
+port       <- Sys.getenv("DB_PORT") 
+host       <- Sys.getenv("DB_HOST") 
 
 # driver for DatabaseConnector
-downloadJdbcDrivers("...", here()) # if you already have this you can omit and change pathToDriver below
-connectionDetails <- createConnectionDetails(dbms = "...",
+downloadJdbcDrivers("postgresql", here()) # if you already have this you can omit and change pathToDriver below
+connectionDetails <- createConnectionDetails(dbms = "postgresql",
                                              server =server,
                                              user = user,
                                              password = password,
@@ -63,12 +66,11 @@ connectionDetails <- createConnectionDetails(dbms = "...",
 # set up the dbConnect details below (see https://dbi.r-dbi.org/articles/dbi for more details)
 # you may need to install another package for this (although RPostgres is included with renv in case you are using postgres)
 
-db <- dbConnect("...")
+db <- dbConnect(RPostgres::Postgres(), dbname = server_dbi, port = port, host = host, user = user,
+                password = password)
 # eg for postgres 
 # db <- dbConnect(RPostgres::Postgres(), dbname = server_dbi, port = port, host = host, user = user,
 #                 password = password)
-
-
 
 
 # Set database details -----
@@ -76,17 +78,17 @@ db <- dbConnect("...")
 # your sql dialect used with the OHDSI SqlRender package
 # eg postgresql, redshift, etc
 # see https://ohdsi.github.io/SqlRender/articles/UsingSqlRender.html for more details
-targetDialect <-"....."  
+targetDialect <-"postgresql" 
 
 # The name of the schema that contains the OMOP CDM with patient-level data
-cdm_database_schema<-"....."
+cdm_database_schema<-"public"
 
 # The name of the schema that contains the vocabularies 
 # (often this will be the same as cdm_database_schema)
-vocabulary_database_schema<-"....."
+vocabulary_database_schema<-"public"
 
 # The name of the schema where results tables will be created 
-results_database_schema<-"....."
+results_database_schema<-"results"
 
 # Tables to be created in your results schema for this analysis will be named using this as the stem 
 # Note, any existing tables in your results schema with the same names will be overwritten
