@@ -2,15 +2,15 @@
   "ConceptSets": [
     {
       "id": 0,
-      "name": "drug\n",
+      "name": "Donepezil Users",
       "expression": {
         "items": [
           {
             "concept": {
-              "CONCEPT_CLASS_ID": "ATC 3rd",
-              "CONCEPT_CODE": "M01A",
-              "CONCEPT_ID": 21603933,
-              "CONCEPT_NAME": "ANTIINFLAMMATORY AND ANTIRHEUMATIC PRODUCTS, NON-STEROIDS",
+              "CONCEPT_CLASS_ID": "ATC 5th",
+              "CONCEPT_CODE": "N06DA02",
+              "CONCEPT_ID": 21604795,
+              "CONCEPT_NAME": "donepezil; oral",
               "DOMAIN_ID": "Drug",
               "INVALID_REASON": "V",
               "INVALID_REASON_CAPTION": "Valid",
@@ -28,11 +28,7 @@
     "CriteriaList": [
       {
         "DrugExposure": {
-          "CodesetId": 0,
-          "OccurrenceStartDate": {
-            "Value": "2019-01-01",
-            "Op": "gte"
-          }
+          "CodesetId": 0
         }
       }
     ],
@@ -41,23 +37,16 @@
       "PostDays": 0
     },
     "PrimaryCriteriaLimit": {
-      "Type": "All"
+      "Type": "First"
     }
   },
   "QualifiedLimit": {
     "Type": "First"
   },
   "ExpressionLimit": {
-    "Type": "All"
+    "Type": "First"
   },
   "InclusionRules": [],
-  "EndStrategy": {
-    "CustomEra": {
-      "DrugCodesetId": 0,
-      "GapDays": 30,
-      "Offset": 0
-    }
-  },
   "CensoringCriteria": [],
   "CollapseSettings": {
     "CollapseType": "ERA",

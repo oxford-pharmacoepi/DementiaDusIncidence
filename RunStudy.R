@@ -5,8 +5,9 @@ start<-Sys.time()
 # extra options for running -----
 # if you have already created the cohorts, you can set this to FALSE to skip instantiating these cohorts again
 create.outcome.cohorts<-TRUE
-create.comorbidity.cohorts<-TRUE
-create.medication.cohorts<-TRUE
+
+# to capture mortality 
+mortality.captured <- FALSE
 
 # to run for just one exposure/ outcome pair
 run.as.test<-FALSE
@@ -19,20 +20,6 @@ log_file <- paste0(output.folder, "/log.txt")
 logger <- create.logger()
 logfile(logger) <- log_file
 level(logger) <- "INFO"
-
-# functions ----
-# printing numbers with 1 decimal place and commas 
-nice.num<-function(x) {
-  trimws(format(round(x,1),
-                big.mark=",", nsmall = 1, digits=1, scientific=FALSE))}
-# printing numbers with 2 decimal place and commas 
-nice.num2<-function(x) {
-  trimws(format(round(x,2),
-                big.mark=",", nsmall = 2, digits=2, scientific=FALSE))}
-# for counts- without decimal place
-nice.num.count<-function(x) {
-  trimws(format(x,
-                big.mark=",", nsmall = 0, digits=0, scientific=FALSE))}
 
 
 # link to db tables -----
@@ -58,16 +45,14 @@ concept_ancestor_db<-tbl(db, sql(paste0("SELECT * FROM ",
                                         vocabulary_database_schema,
                                         ".concept_ancestor")))
 
-# if(mortality.captured==TRUE){
-# death_db<-tbl(db, sql(paste0("SELECT * FROM ",
-#                                 cdm_database_schema,
-#                                 ".death")))
-# }
+if(mortality.captured==TRUE){
+death_db<-tbl(db, sql(paste0("SELECT * FROM ",
+                                cdm_database_schema,
+                                ".death")))
+}
 
 # result table names ----
-cohortTableOutcomes<-paste0(cohortTableStem, "Outcomes")
-cohortTableComorbidity<-paste0(cohortTableStem, "Comorbidity")
-cohortTableMedications<-paste0(cohortTableStem, "Medications")
+cohortTableOutcomes<-paste0(cohortTableStem)
 
 # instantiate study cohorts ----
 info(logger, 'INSTANTIATING STUDY COHORTS')
