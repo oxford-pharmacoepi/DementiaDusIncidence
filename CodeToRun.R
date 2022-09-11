@@ -95,4 +95,17 @@ source(here("RunStudy.R"))
 # after the study is run you should have a zip folder in your output folder to share
 
 
+# view results
+# you can take a quick look at incidence rate estimates
+# by uncommenting and runnng the below
 
+# library(ggplot2)
+# plot_data<-inc$incidence_estimates %>% 
+#   left_join(inc$analysis_settings %>% 
+#               select("incidence_analysis_id","cohort_id_outcome",
+#                      "outcome_name"))
+# 
+# plot_data %>% 
+#   ggplot(aes(colour=outcome_name))+
+#   facet_grid(outcome_name~ .)+
+#   geom_point(aes(calendar_year,ir_100000_pys))

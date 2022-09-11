@@ -18,7 +18,8 @@ inc <- collect_pop_incidence(db,
                              cohort_ids_outcomes=outcome_cohorts$cohort_definition_id,
                              time_intervals="Years",
                              repetitive_events=FALSE,
-                             outcome_washout_windows=NULL
+                             outcome_washout_windows=NULL,
+                             confidence_interval = FALSE
                              )
 print(paste0("- Got incidence"))
 info(logger, "- Got incidence")
