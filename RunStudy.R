@@ -2,18 +2,6 @@ if (!file.exists(output.folder)){
   dir.create(output.folder, recursive = TRUE)}
 
 start<-Sys.time()
-# extra options for running -----
-# if you have already created the cohorts, you can set this to FALSE to skip instantiating these cohorts again
-create.exposure.cohorts<-TRUE
-
-# to capture mortality 
-mortality.captured <- FALSE
-
-# to run for just one exposure/ outcome pair
-run.as.test<-FALSE
-
-# run main exposure/ outcome pairs only
-run.main.analyses.only<-FALSE
 
 # start log ----
 log_file <- paste0(output.folder, "/log.txt")
@@ -21,63 +9,67 @@ logger <- create.logger()
 logfile(logger) <- log_file
 level(logger) <- "INFO"
 
-
-# link to db tables -----
-person_db<-tbl(db, sql(paste0("SELECT * FROM ",
-                              cdm_database_schema,
-                              ".person")))
-observation_period_db<-tbl(db, sql(paste0("SELECT * FROM ",
-                                          cdm_database_schema,
-                                          ".observation_period")))
-visit_occurrence_db<-tbl(db, sql(paste0("SELECT * FROM ",
-                                        cdm_database_schema,
-                                        ".visit_occurrence")))
-condition_occurrence_db<-tbl(db, sql(paste0("SELECT * FROM ",
-                                            cdm_database_schema,
-                                            ".condition_occurrence")))
-drug_era_db<-tbl(db, sql(paste0("SELECT * FROM ",
-                                cdm_database_schema,
-                                ".drug_era")))
-concept_db<-tbl(db, sql(paste0("SELECT * FROM ",
-                                        vocabulary_database_schema,
-                                        ".concept")))
-concept_ancestor_db<-tbl(db, sql(paste0("SELECT * FROM ",
-                                        vocabulary_database_schema,
-                                        ".concept_ancestor")))
-
-if(mortality.captured==TRUE){
-death_db<-tbl(db, sql(paste0("SELECT * FROM ",
-                                cdm_database_schema,
-                                ".death")))
-}
-
-# result table names ----
-cohortTableExposures<-paste0(cohortTableStem)
-
 # instantiate study cohorts ----
 info(logger, 'INSTANTIATING STUDY COHORTS')
 source(here("1_InstantiateCohorts","InstantiateStudyCohorts.R"))
 info(logger, 'GOT STUDY COHORTS')
 
-Pop<-person_db %>% 
-  inner_join(exposure.cohorts_db,
-             by = c("person_id" = "subject_id" )) %>%
-  select(person_id,gender_concept_id, 
-         year_of_birth, month_of_birth, day_of_birth,
-         cohort_start_date,
-         cohort_definition_id)  %>% 
-  left_join(observation_period_db %>% 
-              select("person_id",  "observation_period_start_date", "observation_period_end_date") %>% 
-              distinct(),
-            by = "person_id") %>% 
-  collect()
+outcome_cohorts_db<-tbl(db, sql(paste0("SELECT * FROM ",
+                                       results_database_schema,".",
+                                       outcome_table_name)))%>% 
+  mutate(cohort_definition_id=as.integer(cohort_definition_id)) 
+
+# drop any outcome cohort with less than 5 people
+outcome_cohorts_db %>%
+  group_by(cohort_definition_id) %>% tally()
+
+outcome_cohorts<-outcome_cohorts_db %>% 
+  group_by(cohort_definition_id) %>% 
+  tally() %>% 
+  collect() %>% 
+  filter(n>5) 
+
+# Run incidence rate analysis ----
+info(logger, 'RUNNING INCIDENCE RATE ANALYSIS')
+source(here("2_Analysis","IncidenceAnalysis.R"))
+info(logger, 'INCIDENCE RATE ANALYSIS RAN')
+
+# add outcome names to analysis_settings
+outcome_cohorts<-outcome_cohorts %>% 
+  left_join(cohortDefinitionSet %>% 
+              select("cohortId", "cohortName") %>% 
+              rename("cohort_definition_id"="cohortId"))
+
+inc$analysis_settings<-inc$analysis_settings %>% 
+  left_join(cohortDefinitionSet %>% 
+              select("cohortId", "cohortName") %>% 
+              mutate(cohortId=as.character(cohortId)) %>%       
+              rename("cohort_id_outcome"="cohortId") %>%       
+              rename("outcome_name"="cohortName"),
+            by="cohort_id_outcome")
 
 
-# Run analysis ----
-info(logger, 'RUNNING ANALYSIS')
-source(here("2_Analysis","Analysis.R"))
-info(logger, 'ANALYSIS RAN')
+# save
+write.csv(inc$incidence_estimates, 
+          paste0(output.folder, "/Incidence_estimates_", db.name, ".csv"))
+write.csv(inc$analysis_settings, 
+          paste0(output.folder, "/analysis_settings_", db.name, ".csv"))
+write.csv(inc$attrition, 
+          paste0(output.folder, "/attrition_", db.name, ".csv"))
 
+# # zip results
+print("Zipping results to output folder")
+unlink(paste0(output.folder, "/OutputToShare_", db.name, ".zip"))
+zipName <- paste0(output.folder, "/OutputToShare_", db.name, ".zip")
+
+files<-c(log_file,
+         paste0(output.folder, "/Incidence_estimates_", db.name, ".csv"),
+         paste0(output.folder, "/analysis_settings_", db.name, ".csv"),
+         paste0(output.folder, "/attrition_", db.name, ".csv"))
+files <- files[file.exists(files)==TRUE]
+createZipFile(zipFile = zipName,
+              rootFolder=output.folder,
+              files = files)
 
 
 print("Done!")

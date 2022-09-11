@@ -8,3 +8,4 @@ Cohorts/ExposureCohorts/sql/test hosp.sql
 errorReportSql.txt
 CodeToRun_local_HM.R
 Results*
+.Rproj.user
