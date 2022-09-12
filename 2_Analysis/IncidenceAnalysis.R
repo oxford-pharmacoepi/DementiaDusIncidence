@@ -12,7 +12,7 @@ print(paste0("- Getting incidence"))
 info(logger, "- Getting incidence")
 denominator <- dpop$denominator_populations
 inc <- collect_pop_incidence(db,
-                             results_schema_outcome = results_database_schema,
+                             results_schema_outcomes = results_database_schema,
                              table_name_outcomes = outcome_table_name,
                              study_denominator_pop = denominator,
                              cohort_ids_denominator_pops = "1",
@@ -20,7 +20,8 @@ inc <- collect_pop_incidence(db,
                              time_intervals="Years",
                              repetitive_events=FALSE,
                              outcome_washout_windows=NULL,
-                             confidence_interval = "none"
+                             confidence_interval = "none",
+                             minimum_cell_count = 0
                              )
 print(paste0("- Got incidence"))
 info(logger, "- Got incidence")
