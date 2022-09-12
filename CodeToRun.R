@@ -1,8 +1,6 @@
 # Manage project dependencies ------
 # install.packages("renv") # if not already installed, install renv from CRAN
-# the following will prompt you to install the various packages used in the study 
-renv::activate()
-renv::restore() 
+remotes::install_github("darwin-eu/IncidencePrevalence")
 
 # Load packages ------
 # load r packages
