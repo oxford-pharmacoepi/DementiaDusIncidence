@@ -1,3 +1,9 @@
+
+# table names----
+outcome_table_name<-paste0(outcome_table_stem,"_Outcomes")
+strata_table_name<-paste0(outcome_table_stem,"_Strata")
+
+# output files ----
 if (!file.exists(output.folder)){
   dir.create(output.folder, recursive = TRUE)}
 

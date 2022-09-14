@@ -72,7 +72,7 @@ results_database_schema<-"..."
 # Name of outcome table in the result table where the outcome cohorts will be stored
 # Note, if there is an existing table in your results schema with the same names
 # it will be overwritten 
-outcome_table_name<-"..."
+outcome_table_stem<-"..."
 
 # check database connections ----
 # to check whether the DatabaseConnector connection details are correct, 
@@ -88,6 +88,7 @@ tbl(db, sql(paste0("SELECT * FROM ",cdm_database_schema, ".person"))) %>%
 
 # Run the study ------
 create_outcome_cohorts<-TRUE # set to false if already instantiated
+create_strata_cohorts<-TRUE # set to false if already instantiated
 source(here("RunStudy.R"))
 
 # after the study is run you should have a zip folder in your output folder to share
