@@ -36,6 +36,15 @@ outcome_cohorts<-outcome_cohorts_db %>%
   filter(n>5) 
 
 # Run incidence rate analysis ----
+
+# strata_id<- tbl(db, sql(paste0("SELECT * FROM ",
+#                    results_database_schema,".", strata_table_name))) %>% 
+#   group_by(cohort_definition_id) %>% 
+#   tally() %>% 
+#   select(cohort_definition_id) %>% 
+#   pull()
+
+
 info(logger, 'RUNNING INCIDENCE RATE ANALYSIS')
 source(here("2_Analysis","IncidenceAnalysis.R"))
 info(logger, 'INCIDENCE RATE ANALYSIS RAN')
