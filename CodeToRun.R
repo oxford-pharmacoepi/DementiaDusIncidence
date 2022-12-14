@@ -1,7 +1,7 @@
 # Load packages ------
 
 # to install latest version of IncidencePrevalence
-# remotes::install_github("darwin-eu/IncidencePrevalence")
+#remotes::install_github("darwin-eu-dev/IncidencePrevalence")
 
 # load r packages
 library(SqlRender)
@@ -18,7 +18,7 @@ library(CDMConnector)
 
 # database metadata and connection details -----
 # The name/ acronym for the database
-db.name<-"CPRD"
+db.name<-"CPRDAurum"
 # Set output folder location -----
 # the path to a folder where the results from this analysis will be saved
 # to set the location within the project with folder called "ouput, we can use: here("output")
@@ -44,10 +44,6 @@ db <- dbConnect(RPostgres::Postgres(),
                 host = host, 
                 user = user, 
                 password = password)
-# eg for postgres 
-# db <- dbConnect(RPostgres::Postgres(), dbname = server_dbi, port = port, host = host, user = user,
-#                 password = password)
-
 
 # Set database details -----
 # The name of the schema that contains the OMOP CDM with patient-level data
@@ -63,7 +59,7 @@ results_database_schema<-"results"
 # Name of outcome table in the result table where the outcome cohorts will be stored
 # Note, if there is an existing table in your results schema with the same names
 # it will be overwritten 
-outcome_table_stem<-"d_inc"
+outcome_table_stem<-"dementadruginc"
 
 # create cdm reference ----
 cdm <- CDMConnector::cdm_from_con(con = db, 
@@ -78,6 +74,7 @@ cdm$person %>%
 # Run the study ------
 create_outcome_cohorts<-TRUE # set to false if already instantiated
 create_strata_cohorts<-TRUE # set to false if already instantiated
+
 source(here("RunStudy.R"))
 # after the study is run you should have a zip folder in your output folder to share
 
