@@ -49,15 +49,23 @@ info(logger, "- Got incidence: dementia population")
 print(paste0("- Gathering incidence results: dementia population"))
 info(logger, "- Gathering incidence results: dementia population")
 
-remotes::install_github("darwin-eu-dev/IncidencePrevalence@update_attrition")
-
-study_results <- gatherIncidencePrevalenceResults(
-  resultList=list(inc),
-  outcomeCohortId = 1,
-  outcomeCohortName = "donepezil",
-  databaseName = db.name)
+# remotes::install_github("darwin-eu-dev/IncidencePrevalence@update_attrition")
 # 
+# study_results <- gatherIncidencePrevalenceResults(
+#   resultList=list(inc),
+#   outcomeCohortId = 1,
+#   outcomeCohortName = "donepezil",
+#   databaseName = db.name)
+# # 
 # dplyr::glimpse(study_results$incidence_estimates)
+
+
+# study_results<- gatherResults(prevalence_estimates, 
+#                              outcomeCohortId = outcome_cohorts$cohortId,
+#                              outcomeCohortName = outcome_cohorts$cohortName, 
+#                              databaseName = db_name)
+
+
 
 print(paste0("- Got incidence results: dementia population"))
 info(logger, "- Got incidence results: dementia population")

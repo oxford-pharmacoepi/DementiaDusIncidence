@@ -1,7 +1,7 @@
 # Load packages ------
 
 # to install latest version of IncidencePrevalence
-#remotes::install_github("darwin-eu-dev/IncidencePrevalence")
+remotes::install_github("darwin-eu-dev/IncidencePrevalence",force = TRUE)
 
 # load r packages
 library(SqlRender)
@@ -72,8 +72,8 @@ cdm$person %>%
   tally()
 
 # Run the study ------
-create_outcome_cohorts<-TRUE # set to false if already instantiated
-create_strata_cohorts<-TRUE # set to false if already instantiated
+# create_outcome_cohorts<-TRUE # set to false if already instantiated # need to add a loop in instanstiate to make this happen
+# create_strata_cohorts<-TRUE # set to false if already instantiated
 
 source(here("RunStudy.R"))
 # after the study is run you should have a zip folder in your output folder to share
