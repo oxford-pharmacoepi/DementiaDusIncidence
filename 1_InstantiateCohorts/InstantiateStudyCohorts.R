@@ -1,11 +1,11 @@
 # instantiate outcome cohorts
 info(logger, "- getting outcome definitions")
-outcome_cohorts <- readCohortSet(here(
+outcome_cohorts <- CDMConnector::readCohortSet(here(
   "1_InstantiateCohorts",
   "OutcomeCohorts"
 ))
 info(logger, "- getting outcomes")
-cdm <- generateCohortSet(cdm, outcome_cohorts,
+cdm <- CDMConnector::generateCohortSet(cdm, outcome_cohorts,
                          cohortTableName = outcome_table_name,
                          overwrite = TRUE
 )
