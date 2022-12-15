@@ -8,7 +8,7 @@ cdm$denominator <- generateDenominatorCohortSet(
   startDate = as.Date("2007-01-01"),
   strataTable = strata_table_name ,
   strataCohortId = 1 ,
-  ageGroups =list(
+  ageGroup =list(
     c(40, 150),
     c(40, 64),
     c(65, 79),
@@ -49,21 +49,20 @@ info(logger, "- Got incidence: dementia population")
 print(paste0("- Gathering incidence results: dementia population"))
 info(logger, "- Gathering incidence results: dementia population")
 
-# remotes::install_github("darwin-eu-dev/IncidencePrevalence@update_attrition")
-# 
-# study_results <- gatherIncidencePrevalenceResults(
-#   resultList=list(inc),
-#   outcomeCohortId = 1,
-#   outcomeCohortName = "donepezil",
-#   databaseName = db.name)
-# # 
-# dplyr::glimpse(study_results$incidence_estimates)
+# this works
+study_results <- gatherIncidencePrevalenceResults(
+  resultList=list(inc),
+  outcomeCohortId = 1,
+  outcomeCohortName = "donepezil",
+  databaseName = db.name)
 
+dplyr::glimpse(study_results$incidence_estimates)
 
-# study_results<- gatherResults(prevalence_estimates, 
-#                              outcomeCohortId = outcome_cohorts$cohortId,
-#                              outcomeCohortName = outcome_cohorts$cohortName, 
-#                              databaseName = db_name)
+# this does not work
+study_results<- gatherIncidencePrevalenceResults(list(inc),
+                             outcomeCohortId = outcome_cohorts$cohortId,
+                             outcomeCohortName = outcome_cohorts$cohortName,
+                             databaseName = db.name)
 
 
 
@@ -82,3 +81,4 @@ info(logger, "- Exporting incidence results: dementia population")
 print(paste0("- Exported incidence results: dementia population"))
 info(logger, "- Exported incidence results: dementia population")
 
+#study_results $incidence_estimates %>% dplyr::filter(outcome_cohort_id==1)

@@ -75,6 +75,6 @@ cdm$person %>%
 # create_outcome_cohorts<-TRUE # set to false if already instantiated # need to add a loop in instanstiate to make this happen
 # create_strata_cohorts<-TRUE # set to false if already instantiated
 
-source(here("RunStudy.R"))
+#source(here("RunStudy.R"))
 # after the study is run you should have a zip folder in your output folder to share
 
