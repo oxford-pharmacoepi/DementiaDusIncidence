@@ -49,22 +49,17 @@ info(logger, "- Got incidence: dementia population")
 print(paste0("- Gathering incidence results: dementia population"))
 info(logger, "- Gathering incidence results: dementia population")
 
-# this works
-study_results <- gatherIncidencePrevalenceResults(
-  resultList=list(inc),
-  outcomeCohortId = 1,
-  outcomeCohortName = "donepezil",
-  databaseName = db.name)
-
 dplyr::glimpse(study_results$incidence_estimates)
 
-# this does not work
 study_results<- gatherIncidencePrevalenceResults(list(inc),
                              outcomeCohortId = outcome_cohorts$cohortId,
                              outcomeCohortName = outcome_cohorts$cohortName,
                              databaseName = db.name)
 
-
+study_results1<- gatherIncidencePrevalenceResults(list(inc),
+                                                 outcomeCohortId = 1,
+                                                 outcomeCohortName = "donepezil",
+                                                 databaseName = db.name)
 
 print(paste0("- Got incidence results: dementia population"))
 info(logger, "- Got incidence results: dementia population")
@@ -73,9 +68,9 @@ info(logger, "- Got incidence results: dementia population")
 print(paste0("- Exporting incidence results: dementia population"))
 info(logger, "- Exporting incidence results: dementia population")
 
-# exportIncidencePrevalenceResults(result=study_results, 
-#                                  zipName="example_results",
-#                                  outputFolder=here::here()) 
+exportIncidencePrevalenceResults(result=study_results,
+                                 zipName="CPRDresults",
+                                 outputFolder=here::here("Results"))
 
 
 print(paste0("- Exported incidence results: dementia population"))
