@@ -84,8 +84,8 @@ inc_yrs_plot <- as.data.frame(inc_yrs_plot)
 
 
 plotAll <- inc_yrs_plot %>%
-  ggplot(aes(x = time, y = ir_100000_pys, color=outcome_cohort_name, group=outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper), alpha = .3, colour = NA) +
+  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color=outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 3) + 
   xlab("Year") + 
