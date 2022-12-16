@@ -19,6 +19,7 @@ library(CDMConnector)
 # database metadata and connection details -----
 # The name/ acronym for the database
 db.name<-"CPRDAurum"
+#db.name<-"CPRDGold"
 # Set output folder location -----
 # the path to a folder where the results from this analysis will be saved
 # to set the location within the project with folder called "ouput, we can use: here("output")
@@ -33,6 +34,7 @@ password<- Sys.getenv("DB_PASSWORD")
 port<-Sys.getenv("DB_PORT") 
 host<-Sys.getenv("DB_HOST") 
 server_dbi<-Sys.getenv("DB_SERVER_cdm_aurum_202106_dbi")
+#server_dbi<-Sys.getenv("DB_SERVER_cdmgold202007_dbi")
 
 # Specify cdm_reference via DBI connection details -----
 # In this study we also use the DBI package to connect to the database
