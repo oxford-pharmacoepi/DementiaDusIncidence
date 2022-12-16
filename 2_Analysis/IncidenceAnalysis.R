@@ -56,10 +56,10 @@ study_results<- gatherIncidencePrevalenceResults(list(inc),
                              outcomeCohortName = outcome_cohorts$cohortName,
                              databaseName = db.name)
 
-study_results1<- gatherIncidencePrevalenceResults(list(inc),
-                                                 outcomeCohortId = 1,
-                                                 outcomeCohortName = "donepezil",
-                                                 databaseName = db.name)
+# study_results1<- gatherIncidencePrevalenceResults(list(inc),
+#                                                  outcomeCohortId = 1,
+#                                                  outcomeCohortName = "donepezil",
+#                                                  databaseName = db.name)
 
 print(paste0("- Got incidence results: dementia population"))
 info(logger, "- Got incidence results: dementia population")
