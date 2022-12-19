@@ -31,5 +31,5 @@ print("Done!")
 print("-- If all has worked, there should now be a zip folder with your results in the output folder to share")
 print("-- Thank you for running the study!")
 Sys.time()-start
-# readLines(log_file)
+readLines(log_file)
 
