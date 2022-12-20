@@ -108,7 +108,7 @@ plotAll <- inc_yrs_plot %>%
         panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
         legend.key = element_rect(fill = "transparent", colour = "transparent")) 
 
-plotname <- paste0("IncidenceRatesWholePop", db.name,".pdf")
+plotname <- paste0("1DrugIncidenceRatesWholePop", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 7, height = 5)
@@ -150,7 +150,7 @@ plotGender <- plotGender + facet_wrap(~denominator_sex, scales="free_y") +
   theme(strip.background = element_rect(colour="black", fill=NA),
         panel.border = element_rect(fill = NA, color = "black"))
 
-plotname <- paste0("IncidenceRatesGender", db.name,".pdf")
+plotname <- paste0("1DrugIncidenceRatesGender", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 10, height = 5)
@@ -200,7 +200,7 @@ plotAge <- plotAge + facet_wrap(~denominator_age_group, labeller=labeller(denomi
   theme(strip.background = element_rect(colour="black", fill=NA),
         panel.border = element_rect(fill = NA, color = "black"))
 
-plotname <- paste0("IncidenceRatesAge", db.name,".pdf")
+plotname <- paste0("1DrugIncidenceRatesAge", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 15, height = 5)
@@ -249,7 +249,7 @@ plotAgeGender <- plotAgeGender + facet_grid(denominator_sex ~ denominator_age_gr
   theme(strip.background = element_rect(colour="black", fill=NA),
         panel.border = element_rect(fill = NA, color = "black"))
 
-plotname <- paste0("IncidenceRatesAgeGender", db.name,".pdf")
+plotname <- paste0("1DrugIncidenceRatesAgeGender", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 15, height = 7)
@@ -360,7 +360,7 @@ plotAll <- inc_yrs_plot %>%
         panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
         legend.key = element_rect(fill = "transparent", colour = "transparent")) 
 
-plotname <- paste0("IncidenceRatesWholePopDrugsGenPop", db.name,".pdf")
+plotname <- paste0("2DrugIncidenceRatesWholePopDrugsGenPop", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 7, height = 5)
@@ -401,7 +401,7 @@ plotGender <- plotGender + facet_wrap(~denominator_sex, scales="free_y") +
   theme(strip.background = element_rect(colour="black", fill=NA),
         panel.border = element_rect(fill = NA, color = "black"))
 
-plotname <- paste0("IncidenceRatesGenderDrugsGenPop", db.name,".pdf")
+plotname <- paste0("2DrugIncidenceRatesGenderDrugsGenPop", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 10, height = 5)
@@ -450,7 +450,7 @@ plotAge <- plotAge + facet_wrap(~denominator_age_group, labeller=labeller(denomi
   theme(strip.background = element_rect(colour="black", fill=NA),
         panel.border = element_rect(fill = NA, color = "black"))
 
-plotname <- paste0("IncidenceRatesAgeDrugsGenPop", db.name,".pdf")
+plotname <- paste0("2DrugIncidenceRatesAgeDrugsGenPop", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 15, height = 5)
@@ -499,7 +499,7 @@ plotAgeGender <- plotAgeGender + facet_grid(denominator_sex ~ denominator_age_gr
   theme(strip.background = element_rect(colour="black", fill=NA),
         panel.border = element_rect(fill = NA, color = "black"))
 
-plotname <- paste0("IncidenceRatesAgeGenderDrugGenPop", db.name,".pdf")
+plotname <- paste0("2DrugIncidenceRatesAgeGenderDrugGenPop", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 15, height = 7)
@@ -600,7 +600,7 @@ plotAll <- inc_yrs_plot3 %>%
         panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
         legend.position = "none") 
 
-plotname <- paste0("DementiaIncidenceRatesWholePop", db.name,".pdf")
+plotname <- paste0("3DementiaIncidenceRatesWholePop", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 7, height = 5)
@@ -636,7 +636,7 @@ plotGender2 <- plotGender2 + facet_wrap(~denominator_sex, scales="free_y") +
         panel.border = element_rect(fill = NA, color = "black"))
 
 
-plotname <- paste0("DementiaIncidenceRatesGender", db.name,".pdf")
+plotname <- paste0("3DementiaIncidenceRatesGender", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 7, height = 5)
@@ -676,7 +676,7 @@ plotAge2 <- plotAge2 + facet_wrap(~denominator_age_group, labeller=labeller(deno
   theme(strip.background = element_rect(colour="black", fill=NA),
         panel.border = element_rect(fill = NA, color = "black"))
 
-plotname <- paste0("DementiaIncidenceRatesAge", db.name,".pdf")
+plotname <- paste0("3DementiaIncidenceRatesAge", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 15, height = 5)
@@ -716,7 +716,7 @@ plotAgeGender2 <- plotAgeGender2 + facet_grid(denominator_sex ~ denominator_age_
   theme(strip.background = element_rect(colour="black", fill=NA),
         panel.border = element_rect(fill = NA, color = "black"))
 
-plotname <- paste0("DementiaIncidenceRatesAgeGender", db.name,".pdf")
+plotname <- paste0("3DementiaIncidenceRatesAgeGender", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 15, height = 5)
