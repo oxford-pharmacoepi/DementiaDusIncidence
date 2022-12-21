@@ -40,7 +40,7 @@ inc <- estimateIncidence(
   denominatorTable = "denominator",
   outcomeTable = outcome_table_name,
   interval = "years",
-  outcomeWashout = 0,
+  outcomeWashout = NULL,
   repeatedEvents = FALSE,
   minCellCount = 5
 )
@@ -82,25 +82,23 @@ info(logger, "- Plotting drug incidence results: dementia population")
 ###########################################
 # plot the results fordrugs in  whole population in dementia strata
 inc_yrs_plot <- study_results$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 3 &&
-           denominator_age_group == "40;150") %>%
+  filter(denominator_cohort_id == 3 ) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) 
-
-inc_yrs_plot <- as.data.frame(inc_yrs_plot)
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(time = format(incidence_start_date, format="%Y")) %>%
+  as.data.frame()
 
 plotAll <- inc_yrs_plot %>%
-  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  ggplot( aes(x = time, y = incidence_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
   xlab("Year") + 
   ylab("Incidence Rate (per 100000 py)") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
-  #ggtitle("Incidence rates of anti dementia medications \nin Patients with a diagnosis of dementia") +
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
@@ -119,29 +117,26 @@ dev.off()
 # plot the results stratified by gender
 
 inc_yrs_plot1 <- study_results$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2 &&
-           denominator_age_group == "40;150") %>%
+  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) 
-
-inc_yrs_plot1 <- as.data.frame(inc_yrs_plot1)
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%  
+  mutate(time = format(incidence_start_date, format="%Y")) %>%
+  as.data.frame()
 
 plotGender <- inc_yrs_plot1 %>%
-  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  ggplot( aes(x = time, y = incidence_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
   xlab("Year") + 
   ylab("Incidence Rate (per 100000 py)") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
-  #ggtitle("Incidence rates of anti dementia medications \nin Patients with a diagnosis of dementia") +
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
-        #axis.line = element_line(colour = "black", size = 0.6) ,
         panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
         legend.key = element_rect(fill = "transparent", colour = "transparent")
         ) 
@@ -163,25 +158,21 @@ dev.off()
 # plot the results stratified by age
 
 inc_yrs_plot2 <- study_results$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9 &&
-           denominator_sex == "Both"
-         
-         ) %>%
+  filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) 
-
-inc_yrs_plot2 <- as.data.frame(inc_yrs_plot2)
-
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(time = format(incidence_start_date, format="%Y")) %>%
+  as.data.frame()
 
 agelabels <- c(`40;64` = "40-64 Years", 
             `65;79` = "65-79 Years",
             `80;150` = "80+ Years")
 
 plotAge <- inc_yrs_plot2 %>%
-  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  ggplot( aes(x = time, y = incidence_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
   xlab("Year") + 
@@ -191,7 +182,6 @@ plotAge <- inc_yrs_plot2 %>%
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
-        #axis.line = element_line(colour = "black", size = 0.6) ,
         panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
         legend.key = element_rect(fill = "transparent", colour = "transparent")
   ) 
@@ -212,25 +202,22 @@ dev.off()
 # plot the results stratified by age AND gender
 
 inc_yrs_plot <- study_results$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_age_group != "40;150" &&
-           denominator_sex != "Both"
-         
-  ) %>%
+  filter(denominator_age_group != "40;150" &
+           denominator_sex != "Both") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) 
-
-inc_yrs_plot <- as.data.frame(inc_yrs_plot)
-
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(time = format(incidence_start_date, format="%Y")) %>%
+  as.data.frame()
 
 agelabels <- c(`40;64` = "40-64 Years", 
                `65;79` = "65-79 Years",
                `80;150` = "80+ Years")
 
 plotAgeGender <- inc_yrs_plot %>%
-  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  ggplot( aes(x = time, y = incidence_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
   xlab("Year") + 
@@ -240,7 +227,6 @@ plotAgeGender <- inc_yrs_plot %>%
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
-        #axis.line = element_line(colour = "black", size = 0.6) ,
         panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
         legend.key = element_rect(fill = "transparent", colour = "transparent")
   ) 
@@ -261,6 +247,7 @@ print(paste0("- Plotted drug incidence results: dementia population"))
 info(logger, "- Plotted drug incidence results: dementia population")
 
 
+if (db.name != "SIDIAP") {
 #######################################################
 # incidence of drugs within a general population
 #######################################################
@@ -297,7 +284,7 @@ inc <- estimateIncidence(
   denominatorTable = "denominator",
   outcomeTable = outcome_table_name,
   interval = "years",
-  outcomeWashout = 0,
+  outcomeWashout = NULL,
   repeatedEvents = FALSE,
   minCellCount = 5
 )
@@ -334,25 +321,24 @@ info(logger, "- Plotting drug incidence results: general population")
 ###########################################
 # plot the results for drug incidence in general population
 inc_yrs_plot <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 3 &&
+  filter(denominator_cohort_id == 3 &
            denominator_age_group == "40;150") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) 
-
-inc_yrs_plot <- as.data.frame(inc_yrs_plot)
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(time = format(incidence_start_date, format="%Y")) %>%
+  as.data.frame()
 
 plotAll <- inc_yrs_plot %>%
-  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  ggplot( aes(x = time, y = incidence_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
   xlab("Year") + 
   ylab("Incidence Rate (per 100000 py)") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
-  #ggtitle("Incidence rates of anti dementia medications \nin Patients with a diagnosis of dementia") +
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
@@ -371,18 +357,18 @@ dev.off()
 # plot the results stratified by gender
 
 inc_yrs_plot1 <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2 &&
+  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2 &
            denominator_age_group == "40;150") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) 
-
-inc_yrs_plot1 <- as.data.frame(inc_yrs_plot1)
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(time = format(incidence_start_date, format="%Y")) %>%
+  as.data.frame()
 
 plotGender <- inc_yrs_plot1 %>%
-  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  ggplot( aes(x = time, y = incidence_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
   xlab("Year") + 
@@ -392,7 +378,6 @@ plotGender <- inc_yrs_plot1 %>%
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
-        #axis.line = element_line(colour = "black", size = 0.6) ,
         panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
         legend.key = element_rect(fill = "transparent", colour = "transparent")
   ) 
@@ -413,16 +398,16 @@ dev.off()
 # plot the results stratified by age
 
 inc_yrs_plot2 <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9 &&
+  filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9 &
            denominator_sex == "Both"
          
   ) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) 
-
-inc_yrs_plot2 <- as.data.frame(inc_yrs_plot2)
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(time = format(incidence_start_date, format="%Y")) %>%
+  as.data.frame()
 
 
 agelabels <- c(`40;64` = "40-64 Years", 
@@ -430,8 +415,8 @@ agelabels <- c(`40;64` = "40-64 Years",
                `80;150` = "80+ Years")
 
 plotAge <- inc_yrs_plot2 %>%
-  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  ggplot( aes(x = time, y = incidence_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
   xlab("Year") + 
@@ -441,7 +426,6 @@ plotAge <- inc_yrs_plot2 %>%
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
-        #axis.line = element_line(colour = "black", size = 0.6) ,
         panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
         legend.key = element_rect(fill = "transparent", colour = "transparent")
   ) 
@@ -462,16 +446,16 @@ dev.off()
 # plot the results stratified by age AND gender
 
 inc_yrs_plot <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_age_group != "40;150" &&
+  filter(denominator_age_group != "40;150" &
            denominator_sex != "Both"
          
   ) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) 
-
-inc_yrs_plot <- as.data.frame(inc_yrs_plot)
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(time = format(incidence_start_date, format="%Y")) %>%
+  as.data.frame()
 
 
 agelabels <- c(`40;64` = "40-64 Years", 
@@ -479,8 +463,8 @@ agelabels <- c(`40;64` = "40-64 Years",
                `80;150` = "80+ Years")
 
 plotAgeGender <- inc_yrs_plot %>%
-  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  ggplot( aes(x = time, y = incidence_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
   xlab("Year") + 
@@ -490,7 +474,6 @@ plotAgeGender <- inc_yrs_plot %>%
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
-        #axis.line = element_line(colour = "black", size = 0.6) ,
         panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
         legend.key = element_rect(fill = "transparent", colour = "transparent")
   ) 
@@ -540,7 +523,7 @@ inc <- estimateIncidence(
   denominatorTable = "denominator",
   outcomeTable = strata_table_name,
   interval = "years",
-  outcomeWashout = 0,
+  outcomeWashout = NULL,
   repeatedEvents = FALSE,
   minCellCount = 5
 )
@@ -580,14 +563,13 @@ info(logger, "- Plotting dementia incidence: general population")
 ###########################################
 # plot the results for whole population for dementia incidence
 inc_yrs_plot3 <- study_resultsDEM$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 3 &&
-           denominator_age_group == "40;150")
-
-inc_yrs_plot3 <- as.data.frame(inc_yrs_plot3)
+  filter(denominator_cohort_id == 3 & denominator_age_group == "40;150") %>%
+  mutate(time = format(incidence_start_date, format="%Y")) %>%
+  as.data.frame()
 
 plotAll <- inc_yrs_plot3 %>%
-  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  ggplot( aes(x = time, y = incidence_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
   xlab("Year") + 
@@ -611,14 +593,13 @@ dev.off()
 ###########################################
 # plot the results for by gender for dementia incidence
 inc_yrs_plot4 <- study_resultsDEM$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2 &&
-           denominator_age_group == "40;150")
-
-inc_yrs_plot4 <- as.data.frame(inc_yrs_plot4)
+  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2 & denominator_age_group == "40;150") %>%
+  mutate(time = format(incidence_start_date, format="%Y")) %>%
+  as.data.frame()
 
 plotGender2 <- inc_yrs_plot4 %>%
-  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  ggplot( aes(x = time, y = incidence_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
   xlab("Year") + 
@@ -647,10 +628,10 @@ dev.off()
 # plot the results stratified by age
 
 inc_yrs_plot5 <-study_resultsDEM$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9 &&
-           denominator_sex == "Both") 
-
-inc_yrs_plot5 <- as.data.frame(inc_yrs_plot5)
+  filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9 &
+           denominator_sex == "Both") %>%
+  mutate(time = format(incidence_start_date, format="%Y")) %>%
+  as.data.frame()
 
 
 agelabels <- c(`40;64` = "40-64 Years", 
@@ -658,8 +639,8 @@ agelabels <- c(`40;64` = "40-64 Years",
                `80;150` = "80+ Years")
 
 plotAge2 <- inc_yrs_plot5 %>%
-  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  ggplot( aes(x = time, y = incidence_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
   xlab("Year") + 
@@ -687,19 +668,18 @@ dev.off()
 ###########################################
 # plot the results stratified by age AND gender
 inc_yrs_plot6 <-study_resultsDEM$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_age_group != "40;150"  &&
-           denominator_sex != "Both") 
-
-inc_yrs_plot6 <- as.data.frame(inc_yrs_plot6)
-
+  filter(denominator_age_group != "40;150"  &
+           denominator_sex != "Both") %>%
+  mutate(time = format(incidence_start_date, format="%Y")) %>%
+  as.data.frame()
 
 agelabels <- c(`40;64` = "40-64 Years", 
                `65;79` = "65-79 Years",
                `80;150` = "80+ Years")
 
 plotAgeGender2 <- inc_yrs_plot6 %>%
-  ggplot( aes(x = time, y = ir_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
-  geom_ribbon(aes(ymin = ir_100000_pys_95CI_lower, ymax = ir_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  ggplot( aes(x = time, y = incidence_100000_pys, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
   xlab("Year") + 
@@ -725,4 +705,4 @@ dev.off()
 
 print(paste0("- Plotted dementia incidence: general population"))
 info(logger, "- Plotted dementia incidence: general population")
-
+}
