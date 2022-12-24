@@ -39,6 +39,8 @@ inc <- estimateIncidence(
   cdm = cdm,
   denominatorTable = "denominator",
   outcomeTable = outcome_table_name,
+  outcomeCohortId = outcome_cohorts$cohortId,
+  outcomeCohortName = outcome_cohorts$cohortName,
   interval = "years",
   outcomeWashout = NULL,
   repeatedEvents = FALSE,
@@ -56,10 +58,9 @@ info(logger, "- Gathering drug incidence results: dementia population")
 
 #dplyr::glimpse(study_results$incidence_estimates)
 
-study_results<- gatherIncidencePrevalenceResults(list(inc),
-                             outcomeCohortId = outcome_cohorts$cohortId,
-                             outcomeCohortName = outcome_cohorts$cohortName,
-                             databaseName = db.name)
+study_results<- gatherIncidencePrevalenceResults(cdm = cdm, 
+                                                 list(inc),
+                                                 databaseName = db.name)
 
 print(paste0("- Got drug incidence results: dementia population"))
 info(logger, "- Got drug incidence results: dementia population")
@@ -283,6 +284,8 @@ inc <- estimateIncidence(
   cdm = cdm,
   denominatorTable = "denominator",
   outcomeTable = outcome_table_name,
+  outcomeCohortId = outcome_cohorts$cohortId,
+  outcomeCohortName = outcome_cohorts$cohortName,
   interval = "years",
   outcomeWashout = NULL,
   repeatedEvents = FALSE,
@@ -296,10 +299,9 @@ info(logger, "- Got drug incidence: general population")
 print(paste0("- Gathering drug incidence results: general population"))
 info(logger, "- Gathering drug incidence results: general population")
 
-study_resultsDrugGeneralPop<- gatherIncidencePrevalenceResults(list(inc),
-                                                    outcomeCohortId = outcome_cohorts$cohortId,
-                                                    outcomeCohortName = outcome_cohorts$cohortName,
-                                                    databaseName = db.name)
+study_resultsDrugGeneralPop<- gatherIncidencePrevalenceResults(cdm = cdm,
+                                                               list(inc),
+                                                               databaseName = db.name)
 
 print(paste0("- Gathered drug incidence results: general population"))
 info(logger, "- Gathered drug incidence results: general population")
@@ -522,6 +524,8 @@ inc <- estimateIncidence(
   cdm = cdm,
   denominatorTable = "denominator",
   outcomeTable = strata_table_name,
+  outcomeCohortId = outcome_cohorts$cohortId,
+  outcomeCohortName = outcome_cohorts$cohortName,
   interval = "years",
   outcomeWashout = NULL,
   repeatedEvents = FALSE,
@@ -537,10 +541,9 @@ print(paste0("- Gathering dementia incidence: general population"))
 info(logger, "- Gathering dementia incidence: general population")
 
 
-study_resultsDEM<- gatherIncidencePrevalenceResults(list(inc),
-                                                 outcomeCohortId = strata_cohorts$cohortId,
-                                                 outcomeCohortName = strata_cohorts$cohortName,
-                                                 databaseName = db.name)
+study_resultsDEM<- gatherIncidencePrevalenceResults(cdm = cdm, 
+                                                    list(inc),
+                                                    databaseName = db.name)
 
 print(paste0("- Gathered dementia incidence: general population"))
 info(logger, "- Gathered dementia incidence: general population")
