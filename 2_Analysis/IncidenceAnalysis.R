@@ -77,6 +77,16 @@ exportIncidencePrevalenceResults(result=study_results,
 print(paste0("- Exported drug incidence results: dementia population"))
 info(logger, "- Exported drug incidence results: dementia population")
 
+
+print(paste0("- Extracting patient characteristics: dementia population TBC"))
+info(logger, "- Extracting patient characteristics: dementia population TBC")
+
+#asd <- participants(inc) TBC
+
+print(paste0("- Extracted patient characteristics: dementia population TBC"))
+info(logger, "- Extracted patient characteristics: dementia population TBCasd$")
+
+
 print(paste0("- Plotting drug incidence results: dementia population"))
 info(logger, "- Plotting drug incidence results: dementia population")
 
@@ -248,7 +258,7 @@ print(paste0("- Plotted drug incidence results: dementia population"))
 info(logger, "- Plotted drug incidence results: dementia population")
 
 
-if (db.name != "SIDIAP") {
+if (db.name == "CPRDAurum") {
 #######################################################
 # incidence of drugs within a general population
 #######################################################
@@ -500,20 +510,7 @@ info(logger, "- Plotted drug incidence results: general population")
 # dementia incidence in general population
 ################################################
 
-# get denominator population already run in previous
-# cdm$denominator <- generateDenominatorCohortSet(
-#   cdm = cdm,
-#   startDate = as.Date("2007-01-01"),
-#   ageGroup =list(
-#     c(40, 150),
-#     c(40, 64),
-#     c(65, 79),
-#     c(80, 150)
-#   ),
-#   sex = c("Male", "Female", "Both"),
-#   daysPriorHistory = 365,
-#   verbose = TRUE
-# )
+# get denominator population === already run in previous analysis === 
 
 
 # Estimate incidence -------
