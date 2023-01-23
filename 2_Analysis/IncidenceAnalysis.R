@@ -62,6 +62,19 @@ study_results<- gatherIncidencePrevalenceResults(cdm = cdm,
                                                  list(inc),
                                                  databaseName = db.name)
 
+# save study results as a separate R.data file
+save(study_results, file = here::here(output.folder, "study_results.RData"))
+#load(file = here::here("Results", db.name, "study_results.RData"))
+
+#get participants for incidence analysis (required for SurvivalAnalysis.R)
+participants_inc <- participants(result = inc)
+saveRDS(participants_inc, here(output.folder, "ParticipantsInc.rds")) # 1 gb of data
+
+#save the settings for inc (re
+#get settings for incidence analysis (required for SurvivalAnalysis.R)
+settings_inc <- settings(inc)
+save(settings_inc, file = here::here(output.folder, "SettingsInc.RData")) 
+
 print(paste0("- Got drug incidence results: dementia population"))
 info(logger, "- Got drug incidence results: dementia population")
 
@@ -72,7 +85,6 @@ info(logger, "- Exporting drug incidence results: dementia population")
 exportIncidencePrevalenceResults(result=study_results,
                                  zipName= paste0(db.name, "IPResults"),
                                  outputFolder=here::here("Results", db.name))
-
 
 print(paste0("- Exported drug incidence results: dementia population"))
 info(logger, "- Exported drug incidence results: dementia population")
