@@ -2,6 +2,7 @@
 # table names----
 outcome_table_name<-paste0(outcome_table_stem,"_o")
 strata_table_name<-paste0(outcome_table_stem,"_strata")
+#feature_table_name<-paste0(outcome_table_stem,"_feature")
 
 # output files ----
 if (!file.exists(output.folder)){
@@ -24,8 +25,6 @@ info(logger, 'GOT STUDY COHORTS')
 info(logger, 'RUNNING INCIDENCE RATE ANALYSIS')
 source(here("2_Analysis","IncidenceAnalysis.R"))
 info(logger, 'INCIDENCE RATE ANALYSIS RAN')
-
-# add code for combining and exporting results
 
 print("Done!")
 print("-- If all has worked, there should now be a zip folder with your results in the output folder to share")

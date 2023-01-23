@@ -41,7 +41,7 @@ inc <- estimateIncidence(
   outcomeTable = outcome_table_name,
   outcomeCohortId = outcome_cohorts$cohortId,
   outcomeCohortName = outcome_cohorts$cohortName,
-  interval = "years",
+  interval = c("years", "overall"),
   outcomeWashout = NULL,
   repeatedEvents = FALSE,
   minCellCount = 5
@@ -81,8 +81,6 @@ info(logger, "- Exported drug incidence results: dementia population")
 print(paste0("- Extracting patient characteristics: dementia population TBC"))
 info(logger, "- Extracting patient characteristics: dementia population TBC")
 
-#asd <- participants(inc) TBC
-
 print(paste0("- Extracted patient characteristics: dementia population TBC"))
 info(logger, "- Extracted patient characteristics: dementia population TBCasd$")
 
@@ -106,8 +104,8 @@ plotAll <- inc_yrs_plot %>%
   geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
-  xlab("Year") + 
-  ylab("Incidence Rate (per 100000 py)") +
+  xlab("Calender year") + 
+  ylab("Incidence rate per 100000 person-years") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
   labs(colour = "Dementia Medications") +
@@ -141,8 +139,8 @@ plotGender <- inc_yrs_plot1 %>%
   geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
-  xlab("Year") + 
-  ylab("Incidence Rate (per 100000 py)") +
+  xlab("Calender year") + 
+  ylab("Incidence rate per 100000 person-years") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
   labs(colour = "Dementia Medications") +
@@ -186,8 +184,8 @@ plotAge <- inc_yrs_plot2 %>%
   geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
-  xlab("Year") + 
-  ylab("Incidence Rate (per 100000 py)") +
+  xlab("Calender year") + 
+  ylab("Incidence rate per 100000 person-years") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
   labs(colour = "Dementia Medications") +
@@ -231,8 +229,8 @@ plotAgeGender <- inc_yrs_plot %>%
   geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
-  xlab("Year") + 
-  ylab("Incidence Rate (per 100000 py)") +
+  xlab("Calender year") + 
+  ylab("Incidence rate per 100000 person-years") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
   labs(colour = "Dementia Medications") +
@@ -296,7 +294,7 @@ inc <- estimateIncidence(
   outcomeTable = outcome_table_name,
   outcomeCohortId = outcome_cohorts$cohortId,
   outcomeCohortName = outcome_cohorts$cohortName,
-  interval = "years",
+  interval = c("years", "overall"),
   outcomeWashout = NULL,
   repeatedEvents = FALSE,
   minCellCount = 5
@@ -347,8 +345,8 @@ plotAll <- inc_yrs_plot %>%
   geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
-  xlab("Year") + 
-  ylab("Incidence Rate (per 100000 py)") +
+  xlab("Calender year") + 
+  ylab("Incidence rate per 100000 person-years") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
   labs(colour = "Dementia Medications") +
@@ -383,8 +381,8 @@ plotGender <- inc_yrs_plot1 %>%
   geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
-  xlab("Year") + 
-  ylab("Incidence Rate (per 100000 py)") +
+  xlab("Calender year") + 
+  ylab("Incidence rate per 100000 person-years") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
   labs(colour = "Dementia Medications") +
@@ -431,8 +429,8 @@ plotAge <- inc_yrs_plot2 %>%
   geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
-  xlab("Year") + 
-  ylab("Incidence Rate (per 100000 py)") +
+  xlab("Calender year") + 
+  ylab("Incidence rate per 100000 person-years") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
   labs(colour = "Dementia Medications") +
@@ -479,8 +477,8 @@ plotAgeGender <- inc_yrs_plot %>%
   geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
-  xlab("Year") + 
-  ylab("Incidence Rate (per 100000 py)") +
+  xlab("Calender year") + 
+  ylab("Incidence rate per 100000 person-years") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
   labs(colour = "Dementia Medications") +
@@ -572,8 +570,8 @@ plotAll <- inc_yrs_plot3 %>%
   geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
-  xlab("Year") + 
-  ylab("Dementia Incidence Rate (per 100000 py)") +
+  xlab("Calender year") + 
+  ylab("Dementia incidence rate per 100000 person-years") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
@@ -602,8 +600,8 @@ plotGender2 <- inc_yrs_plot4 %>%
   geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
-  xlab("Year") + 
-  ylab("Dementia Incidence Rate (per 100000 py)") +
+  xlab("Calender year") + 
+  ylab("Dementia incidence rate per 100000 person-years") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
@@ -643,8 +641,8 @@ plotAge2 <- inc_yrs_plot5 %>%
   geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
-  xlab("Year") + 
-  ylab("Dementia Incidence Rate (per 100000 py)") +
+  xlab("Calender year") + 
+  ylab("Dementia incidence rate per 100000 person-years") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
@@ -682,8 +680,8 @@ plotAgeGender2 <- inc_yrs_plot6 %>%
   geom_ribbon(aes(ymin = incidence_100000_pys_95CI_lower, ymax = incidence_100000_pys_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
   geom_line(color = "black", size = 0.25) +
   geom_point(size = 2.5) + 
-  xlab("Year") + 
-  ylab("Dementia Incidence Rate (per 100000 py)") +
+  xlab("Calender year") + 
+  ylab("Dementia incidence rate per 100000 person-years") +
   scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
   scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
