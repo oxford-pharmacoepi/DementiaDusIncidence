@@ -8,9 +8,18 @@
 print(paste0("- Getting denominator: dementia population"))
 info(logger, "- Getting denominator: dementia population")
 
+# change the start date for different databases
+if (db.name == "SIDIAP") {
+  
+  startdate =  as.Date("2010-01-01") } else {
+    
+    startdate =  as.Date("2007-01-01")
+    
+  }
+
 cdm$denominator <- generateDenominatorCohortSet(
   cdm = cdm,
-  startDate = as.Date("2007-01-01"),
+  startDate = startdate,
   strataTable = strata_table_name ,
   strataCohortId = 1 ,
   ageGroup =list(
@@ -66,12 +75,11 @@ study_results<- gatherIncidencePrevalenceResults(cdm = cdm,
 save(study_results, file = here::here(output.folder, "study_results.RData"))
 #load(file = here::here("Results", db.name, "study_results.RData"))
 
-#get participants for incidence analysis (required for SurvivalAnalysis.R)
+#get participants for table 1
 participants_inc <- participants(result = inc)
-saveRDS(participants_inc, here(output.folder, "ParticipantsInc.rds")) # 1 gb of data
+saveRDS(participants_inc, here(output.folder, "ParticipantsInc.rds"))
 
-#save the settings for inc (re
-#get settings for incidence analysis (required for SurvivalAnalysis.R)
+#save the settings for incidence
 settings_inc <- settings(inc)
 save(settings_inc, file = here::here(output.folder, "SettingsInc.RData")) 
 
@@ -94,7 +102,7 @@ print(paste0("- Extracting patient characteristics: dementia population TBC"))
 info(logger, "- Extracting patient characteristics: dementia population TBC")
 
 print(paste0("- Extracted patient characteristics: dementia population TBC"))
-info(logger, "- Extracted patient characteristics: dementia population TBCasd$")
+info(logger, "- Extracted patient characteristics: dementia population TBC")
 
 
 print(paste0("- Plotting drug incidence results: dementia population"))
@@ -103,7 +111,7 @@ info(logger, "- Plotting drug incidence results: dementia population")
 ###########################################
 # plot the results fordrugs in  whole population in dementia strata
 inc_yrs_plot <- study_results$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 3 ) %>%
+  filter(denominator_cohort_id == 3 & analysis_interval == "years") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
@@ -138,7 +146,7 @@ dev.off()
 # plot the results stratified by gender
 
 inc_yrs_plot1 <- study_results$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2) %>%
+  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2 & analysis_interval == "years") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
@@ -179,7 +187,7 @@ dev.off()
 # plot the results stratified by age
 
 inc_yrs_plot2 <- study_results$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9) %>%
+  filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9 & analysis_interval == "years") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
@@ -224,7 +232,7 @@ dev.off()
 
 inc_yrs_plot <- study_results$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
   filter(denominator_age_group != "40;150" &
-           denominator_sex != "Both") %>%
+           denominator_sex != "Both" & analysis_interval == "years") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
@@ -278,7 +286,7 @@ info(logger, "- Getting denominator: general population")
 
 cdm$denominator <- generateDenominatorCohortSet(
   cdm = cdm,
-  startDate = as.Date("2007-01-01"),
+  startDate = startdate,
   ageGroup =list(
     c(40, 150),
     c(40, 64),
@@ -344,7 +352,7 @@ info(logger, "- Plotting drug incidence results: general population")
 # plot the results for drug incidence in general population
 inc_yrs_plot <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
   filter(denominator_cohort_id == 3 &
-           denominator_age_group == "40;150") %>%
+           denominator_age_group == "40;150" & analysis_interval == "years") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
@@ -380,7 +388,7 @@ dev.off()
 
 inc_yrs_plot1 <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
   filter(denominator_cohort_id == 1 | denominator_cohort_id == 2 &
-           denominator_age_group == "40;150") %>%
+           denominator_age_group == "40;150" & analysis_interval == "years") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
@@ -421,7 +429,7 @@ dev.off()
 
 inc_yrs_plot2 <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
   filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9 &
-           denominator_sex == "Both"
+           denominator_sex == "Both" & analysis_interval == "years"
          
   ) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
@@ -469,7 +477,7 @@ dev.off()
 
 inc_yrs_plot <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
   filter(denominator_age_group != "40;150" &
-           denominator_sex != "Both"
+           denominator_sex != "Both" & analysis_interval == "years"
          
   ) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
@@ -573,7 +581,7 @@ info(logger, "- Plotting dementia incidence: general population")
 ###########################################
 # plot the results for whole population for dementia incidence
 inc_yrs_plot3 <- study_resultsDEM$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 3 & denominator_age_group == "40;150") %>%
+  filter(denominator_cohort_id == 3 & denominator_age_group == "40;150" & analysis_interval == "years") %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -603,7 +611,7 @@ dev.off()
 ###########################################
 # plot the results for by gender for dementia incidence
 inc_yrs_plot4 <- study_resultsDEM$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2 & denominator_age_group == "40;150") %>%
+  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2 & denominator_age_group == "40;150" & analysis_interval == "years") %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -639,7 +647,7 @@ dev.off()
 
 inc_yrs_plot5 <-study_resultsDEM$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
   filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9 &
-           denominator_sex == "Both") %>%
+           denominator_sex == "Both" & analysis_interval == "years") %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -679,7 +687,7 @@ dev.off()
 # plot the results stratified by age AND gender
 inc_yrs_plot6 <-study_resultsDEM$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
   filter(denominator_age_group != "40;150"  &
-           denominator_sex != "Both") %>%
+           denominator_sex != "Both" & analysis_interval == "years") %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
