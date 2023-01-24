@@ -20,6 +20,7 @@ if (db.name == "SIDIAP") {
 cdm$denominator <- generateDenominatorCohortSet(
   cdm = cdm,
   startDate = startdate,
+  endDate = as.Date("2020-12-31") ,
   strataTable = strata_table_name ,
   strataCohortId = 1 ,
   ageGroup =list(
@@ -73,15 +74,15 @@ study_results<- gatherIncidencePrevalenceResults(cdm = cdm,
 
 # save study results as a separate R.data file
 save(study_results, file = here::here(output.folder, "study_results.RData"))
-#load(file = here::here("Results", db.name, "study_results.RData"))
 
 #get participants for table 1
 participants_inc <- participants(result = inc)
-saveRDS(participants_inc, here(output.folder, "ParticipantsInc.rds"))
+#saveRDS(participants_inc, here(output.folder, "ParticipantsInc.rds"))
 
 #save the settings for incidence
 settings_inc <- settings(inc)
-save(settings_inc, file = here::here(output.folder, "SettingsInc.RData")) 
+#save(settings_inc, file = here::here(output.folder, "SettingsInc.RData")) 
+write.csv(settings_inc ,file = here::here(output.folder, "SettingsInc.csv"))
 
 print(paste0("- Got drug incidence results: dementia population"))
 info(logger, "- Got drug incidence results: dementia population")
@@ -116,6 +117,7 @@ inc_yrs_plot <- study_results$incidence_estimates %>%  # need to amend this bit 
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -126,8 +128,8 @@ plotAll <- inc_yrs_plot %>%
   geom_point(size = 2.5) + 
   xlab("Calender year") + 
   ylab("Incidence rate per 100000 person-years") +
-  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
-  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
@@ -146,11 +148,12 @@ dev.off()
 # plot the results stratified by gender
 
 inc_yrs_plot1 <- study_results$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2 & analysis_interval == "years") %>%
+  filter((denominator_cohort_id == 1 | denominator_cohort_id == 2) & analysis_interval == "years") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%  
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -161,8 +164,8 @@ plotGender <- inc_yrs_plot1 %>%
   geom_point(size = 2.5) + 
   xlab("Calender year") + 
   ylab("Incidence rate per 100000 person-years") +
-  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
-  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
@@ -187,11 +190,12 @@ dev.off()
 # plot the results stratified by age
 
 inc_yrs_plot2 <- study_results$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9 & analysis_interval == "years") %>%
+  filter((denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9) & analysis_interval == "years") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -206,8 +210,8 @@ plotAge <- inc_yrs_plot2 %>%
   geom_point(size = 2.5) + 
   xlab("Calender year") + 
   ylab("Incidence rate per 100000 person-years") +
-  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
-  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
@@ -231,12 +235,13 @@ dev.off()
 # plot the results stratified by age AND gender
 
 inc_yrs_plot <- study_results$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_age_group != "40;150" &
-           denominator_sex != "Both" & analysis_interval == "years") %>%
+  filter((denominator_age_group != "40;150" &
+           denominator_sex != "Both") & analysis_interval == "years") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -251,8 +256,8 @@ plotAgeGender <- inc_yrs_plot %>%
   geom_point(size = 2.5) + 
   xlab("Calender year") + 
   ylab("Incidence rate per 100000 person-years") +
-  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
-  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
@@ -351,12 +356,13 @@ info(logger, "- Plotting drug incidence results: general population")
 ###########################################
 # plot the results for drug incidence in general population
 inc_yrs_plot <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 3 &
-           denominator_age_group == "40;150" & analysis_interval == "years") %>%
+  filter((denominator_cohort_id == 3 &
+           denominator_age_group == "40;150") & analysis_interval == "years") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -367,8 +373,8 @@ plotAll <- inc_yrs_plot %>%
   geom_point(size = 2.5) + 
   xlab("Calender year") + 
   ylab("Incidence rate per 100000 person-years") +
-  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
-  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
@@ -387,12 +393,13 @@ dev.off()
 # plot the results stratified by gender
 
 inc_yrs_plot1 <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2 &
-           denominator_age_group == "40;150" & analysis_interval == "years") %>%
+  filter((denominator_cohort_id == 1 | denominator_cohort_id == 2 &
+           denominator_age_group == "40;150") & analysis_interval == "years") %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -403,8 +410,8 @@ plotGender <- inc_yrs_plot1 %>%
   geom_point(size = 2.5) + 
   xlab("Calender year") + 
   ylab("Incidence rate per 100000 person-years") +
-  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
-  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
@@ -428,7 +435,7 @@ dev.off()
 # plot the results stratified by age
 
 inc_yrs_plot2 <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9 &
+  filter((denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9) &
            denominator_sex == "Both" & analysis_interval == "years"
          
   ) %>%
@@ -436,6 +443,7 @@ inc_yrs_plot2 <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to 
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -451,8 +459,8 @@ plotAge <- inc_yrs_plot2 %>%
   geom_point(size = 2.5) + 
   xlab("Calender year") + 
   ylab("Incidence rate per 100000 person-years") +
-  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
-  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
@@ -476,14 +484,15 @@ dev.off()
 # plot the results stratified by age AND gender
 
 inc_yrs_plot <- study_resultsDrugGeneralPop$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_age_group != "40;150" &
-           denominator_sex != "Both" & analysis_interval == "years"
+  filter((denominator_age_group != "40;150" &
+           denominator_sex != "Both") & analysis_interval == "years"
          
   ) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -499,8 +508,8 @@ plotAgeGender <- inc_yrs_plot %>%
   geom_point(size = 2.5) + 
   xlab("Calender year") + 
   ylab("Incidence rate per 100000 person-years") +
-  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
-  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
   labs(colour = "Dementia Medications") +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
@@ -581,7 +590,7 @@ info(logger, "- Plotting dementia incidence: general population")
 ###########################################
 # plot the results for whole population for dementia incidence
 inc_yrs_plot3 <- study_resultsDEM$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 3 & denominator_age_group == "40;150" & analysis_interval == "years") %>%
+  filter((denominator_cohort_id == 3 & denominator_age_group == "40;150") & analysis_interval == "years") %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -592,8 +601,8 @@ plotAll <- inc_yrs_plot3 %>%
   geom_point(size = 2.5) + 
   xlab("Calender year") + 
   ylab("Dementia incidence rate per 100000 person-years") +
-  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
-  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
         axis.line = element_line(colour = "black", size = 0.6) ,
@@ -611,7 +620,7 @@ dev.off()
 ###########################################
 # plot the results for by gender for dementia incidence
 inc_yrs_plot4 <- study_resultsDEM$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2 & denominator_age_group == "40;150" & analysis_interval == "years") %>%
+  filter((denominator_cohort_id == 1 | denominator_cohort_id == 2 & denominator_age_group == "40;150") & analysis_interval == "years") %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -622,8 +631,8 @@ plotGender2 <- inc_yrs_plot4 %>%
   geom_point(size = 2.5) + 
   xlab("Calender year") + 
   ylab("Dementia incidence rate per 100000 person-years") +
-  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
-  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
         axis.line = element_line(colour = "black", size = 0.6) ,
@@ -646,8 +655,8 @@ dev.off()
 # plot the results stratified by age
 
 inc_yrs_plot5 <-study_resultsDEM$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9 &
-           denominator_sex == "Both" & analysis_interval == "years") %>%
+  filter((denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9 &
+           denominator_sex == "Both") & analysis_interval == "years") %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -663,8 +672,8 @@ plotAge2 <- inc_yrs_plot5 %>%
   geom_point(size = 2.5) + 
   xlab("Calender year") + 
   ylab("Dementia incidence rate per 100000 person-years") +
-  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
-  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
         panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
@@ -686,8 +695,8 @@ dev.off()
 ###########################################
 # plot the results stratified by age AND gender
 inc_yrs_plot6 <-study_resultsDEM$incidence_estimates %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
-  filter(denominator_age_group != "40;150"  &
-           denominator_sex != "Both" & analysis_interval == "years") %>%
+  filter((denominator_age_group != "40;150"  &
+           denominator_sex != "Both") & analysis_interval == "years") %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -702,8 +711,8 @@ plotAgeGender2 <- inc_yrs_plot6 %>%
   geom_point(size = 2.5) + 
   xlab("Calender year") + 
   ylab("Dementia incidence rate per 100000 person-years") +
-  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) + #blue, #red, #lightblue, #green
-  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF")) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
   theme(axis.text.x = element_text(angle = 45, hjust=1), 
         panel.background = element_blank() ,
         panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
