@@ -11,16 +11,20 @@ info(logger, "- Getting denominator: dementia population")
 # change the start date for different databases
 if (db.name == "SIDIAP") {
   
-  startdate =  as.Date("2010-01-01") } else {
+  startdate =  as.Date("2010-01-01")
+  enddate = as.Date("2021-12-31")
+  
+  } else {
     
     startdate =  as.Date("2007-01-01")
+    enddate = as.Date("2020-12-31")
     
   }
 
 cdm$denominator <- generateDenominatorCohortSet(
   cdm = cdm,
   startDate = startdate,
-  endDate = as.Date("2020-12-31") ,
+  endDate = enddate ,
   strataTable = strata_table_name ,
   strataCohortId = 1 ,
   ageGroup =list(
@@ -281,7 +285,8 @@ print(paste0("- Plotted drug incidence results: dementia population"))
 info(logger, "- Plotted drug incidence results: dementia population")
 
 
-if (db.name == "CPRDAurum") {
+if (db.name == "CPRDAurum" |
+    db.name == "CPRDAurumCovid" ) {
 #######################################################
 # incidence of drugs within a general population
 #######################################################
@@ -292,6 +297,7 @@ info(logger, "- Getting denominator: general population")
 cdm$denominator <- generateDenominatorCohortSet(
   cdm = cdm,
   startDate = startdate,
+  endDate = enddate ,
   ageGroup =list(
     c(40, 150),
     c(40, 64),
