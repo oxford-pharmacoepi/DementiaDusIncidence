@@ -58,7 +58,8 @@ inc <- estimateIncidence(
   interval = c("years", "overall"),
   outcomeWashout = NULL,
   repeatedEvents = FALSE,
-  minCellCount = 5
+  minCellCount = 5,
+  returnParticipants = TRUE
 )
 
 
@@ -81,7 +82,7 @@ save(study_results, file = here::here(output.folder, "study_results.RData"))
 
 #get participants for table 1
 participants_inc <- participants(result = inc)
-#saveRDS(participants_inc, here(output.folder, "ParticipantsInc.rds"))
+saveRDS(participants_inc, here(output.folder, "ParticipantsInc.rds"))
 
 #save the settings for incidence
 settings_inc <- settings(inc)
