@@ -288,6 +288,34 @@ info(logger, "- Plotted drug incidence results: dementia population")
 
 if (db.name == "CPRDAurum" |
     db.name == "CPRDAurumCovid" ) {
+  
+  
+#######################################################
+# period prevalence of drugs within a dementia population
+#######################################################  
+
+prev_period <- estimatePeriodPrevalence(
+    cdm = cdm,
+    denominatorTable = "denominator",
+    outcomeCohortId = outcome_cohorts$cohortId,
+    outcomeCohortName = outcome_cohorts$cohortName,
+    outcomeLookbackDays = 0, 
+    outcomeTable = outcome_table_name,
+    interval = "years" ,
+    completeDatabaseIntervals = TRUE, # prev only estimate for intervals where db captures all of the interval
+    fullContribution = FALSE , # individuals only required to be present for one day in interval
+    minCellCount = 5
+  )
+  
+study_resultsPrevDrug <- gatherIncidencePrevalenceResults(cdm = cdm,
+                                                               list(prev_period),
+                                                               databaseName = db.name)
+
+
+exportIncidencePrevalenceResults(result=study_resultsPrevDrug,
+                                 zipName= paste0(db.name, "PPResultsDrugsDemPop"),
+                                 outputFolder=here::here("Results", db.name))
+
 #######################################################
 # incidence of drugs within a general population
 #######################################################
@@ -555,8 +583,8 @@ inc <- estimateIncidence(
   cdm = cdm,
   denominatorTable = "denominator",
   outcomeTable = strata_table_name,
-  outcomeCohortId = outcome_cohorts$cohortId,
-  outcomeCohortName = outcome_cohorts$cohortName,
+  outcomeCohortId = strata_cohorts$cohortId,
+  outcomeCohortName = strata_cohorts$cohortName,
   interval = "years",
   outcomeWashout = NULL,
   repeatedEvents = FALSE,
