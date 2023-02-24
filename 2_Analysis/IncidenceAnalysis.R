@@ -494,8 +494,35 @@ dev.off()
 #######################################################
 # dementia strata definition includes those with either a dementia diagnosis OR drug
 
+cdm$denominator1 <- generateDenominatorCohortSet(
+  cdm = cdm,
+  startDate = startdate,
+  endDate = enddate ,
+  strataTable = strata_table_name1 ,
+  strataCohortId = 1 ,
+  ageGroup =list(
+    c(40, 150),
+    c(40, 64),
+    c(65, 79),
+    c(80, 150)
+  ),
+  sex = c("Male", "Female", "Both"),
+  daysPriorHistory = 365,
+  verbose = TRUE
+)
 
-
+inc_new <- estimateIncidence(
+  cdm = cdm,
+  denominatorTable = "denominator1",
+  outcomeTable = outcome_table_name,
+  outcomeCohortId = outcome_cohorts$cohortId,
+  outcomeCohortName = outcome_cohorts$cohortName,
+  interval = c("years", "overall"),
+  outcomeWashout = NULL,
+  repeatedEvents = FALSE,
+  minCellCount = 5,
+  returnParticipants = TRUE
+)
 
 
 #######################################################
