@@ -316,6 +316,188 @@ exportIncidencePrevalenceResults(result=study_resultsPrevDrug,
                                  zipName= paste0(db.name, "PPResultsDrugsDemPop"),
                                  outputFolder=here::here("Results", db.name))
 
+
+
+# plot the results fordrugs in  whole population in dementia strata
+pp_yrs_plot <- study_resultsPrevDrug$prevalence_estimates_CPRDAurum %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
+  filter(denominator_cohort_id == 3 ) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(time = format(prevalence_start_date, format="%Y")) %>%
+  as.data.frame()
+
+plotAll <- pp_yrs_plot %>%
+  ggplot( aes(x = time, y = prevalence, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = prevalence_95CI_lower, ymax = prevalence_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  geom_line(color = "black", size = 0.25) +
+  geom_point(size = 2.5) + 
+  xlab("Calender year") + 
+  ylab("Prevalence") +
+  scale_y_continuous( labels = scales::percent, limits = c(0, NA)) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
+  labs(colour = "Dementia Medications") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), 
+        panel.background = element_blank() ,
+        axis.line = element_line(colour = "black", size = 0.6) ,
+        panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
+        legend.key = element_rect(fill = "transparent", colour = "transparent")) 
+
+plotname <- paste0("4DrugPeriodPrevWholePop", db.name,".pdf")
+
+pdf(here("Results",db.name, plotname),
+    width = 7, height = 5)
+print(plotAll, newpage = FALSE)
+dev.off()
+
+###########################################
+# plot the results stratified by gender
+
+prev_yrs_plot1 <- study_resultsPrevDrug$prevalence_estimates_CPRDAurum  %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
+  filter(denominator_cohort_id == 1 | denominator_cohort_id == 2)  %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%  
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(time = format(prevalence_start_date, format="%Y")) %>%
+  as.data.frame()
+
+plotGender <- prev_yrs_plot1 %>%
+  ggplot( aes(x = time, y = prevalence, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = prevalence_95CI_lower, ymax = prevalence_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  geom_line(color = "black", size = 0.25) +
+  geom_point(size = 2.5) + 
+  xlab("Calender year") + 
+  ylab("Prevalence") +
+  scale_y_continuous( labels = scales::percent, limits = c(0, NA)) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
+  labs(colour = "Dementia Medications") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), 
+        panel.background = element_blank() ,
+        panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
+        legend.key = element_rect(fill = "transparent", colour = "transparent")
+  ) 
+
+plotGender <- plotGender + facet_wrap(~denominator_sex, scales="free_y") +
+  theme(strip.background = element_rect(colour="black", fill=NA),
+        panel.border = element_rect(fill = NA, color = "black"))
+
+plotname <- paste0("4DrugPeriodPrevGender", db.name,".pdf")
+
+pdf(here("Results",db.name, plotname),
+    width = 10, height = 5)
+print(plotGender, newpage = FALSE)
+dev.off()
+
+
+
+###########################################
+# plot the results stratified by age
+
+prev_yrs_plot2 <- study_resultsPrevDrug$prevalence_estimates_CPRDAurum %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
+  filter(denominator_cohort_id == 12 | denominator_cohort_id == 6 | denominator_cohort_id == 9) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(time = format(prevalence_start_date, format="%Y")) %>%
+  as.data.frame()
+
+agelabels <- c(`40;64` = "40-64 Years", 
+               `65;79` = "65-79 Years",
+               `80;150` = "80+ Years")
+
+plotAge <- prev_yrs_plot2 %>%
+  ggplot( aes(x = time, y = prevalence, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = prevalence_95CI_lower, ymax = prevalence_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  geom_line(color = "black", size = 0.25) +
+  geom_point(size = 2.5) + 
+  xlab("Calender year") + 
+  ylab("Prevalence") +
+  scale_y_continuous( labels = scales::percent, limits = c(0, NA)) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
+  labs(colour = "Dementia Medications") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), 
+        panel.background = element_blank() ,
+        panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
+        legend.key = element_rect(fill = "transparent", colour = "transparent")
+  ) 
+
+plotAge <- plotAge + facet_wrap(~denominator_age_group, labeller=labeller(denominator_age_group = agelabels), scales="free_y") +
+  theme(strip.background = element_rect(colour="black", fill=NA),
+        panel.border = element_rect(fill = NA, color = "black"))
+
+plotname <- paste0("4DrugIncidenceRatesAge", db.name,".pdf")
+
+pdf(here("Results",db.name, plotname),
+    width = 15, height = 5)
+print(plotAge, newpage = FALSE)
+dev.off()
+
+
+###########################################
+# plot the results stratified by age AND gender
+
+prev_yrs_plot <- study_resultsPrevDrug$prevalence_estimates_CPRDAurum %>%  # need to amend this bit of code to select the estimates relating to inc_yrs
+  filter(denominator_age_group != "40;150" &
+            denominator_sex != "Both")  %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(time = format(prevalence_start_date, format="%Y")) %>%
+  as.data.frame()
+
+agelabels <- c(`40;64` = "40-64 Years", 
+               `65;79` = "65-79 Years",
+               `80;150` = "80+ Years")
+
+plotAgeGender <- prev_yrs_plot %>%
+  ggplot( aes(x = time, y = prevalence, group=outcome_cohort_name, color = outcome_cohort_name)) +
+  geom_ribbon(aes(ymin = prevalence_95CI_lower, ymax = prevalence_95CI_upper, fill = outcome_cohort_name), alpha = .3, color = NA, show.legend = FALSE) +
+  geom_line(color = "black", size = 0.25) +
+  geom_point(size = 2.5) + 
+  xlab("Calender year") + 
+  ylab("Prevalence") +
+  scale_y_continuous( labels = scales::percent, limits = c(0, NA)) +
+  scale_colour_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) + #blue, #red, #lightblue, #green # purple
+  scale_fill_manual(values = c("#00468BFF", "#ED0000FF", "#0099B4FF", "#42B540FF", "#925E9FFF")) +
+  labs(colour = "Dementia Medications") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1), 
+        panel.background = element_blank() ,
+        panel.grid.major = element_line(color = "grey", size = 0.2, linetype = "dashed"),
+        legend.key = element_rect(fill = "transparent", colour = "transparent")
+  ) 
+
+plotAgeGender <- plotAgeGender + facet_grid(denominator_sex ~ denominator_age_group , labeller=labeller(denominator_age_group = agelabels), scales = "free") +
+  theme(strip.background = element_rect(colour="black", fill=NA),
+        panel.border = element_rect(fill = NA, color = "black"))
+
+plotname <- paste0("4DrugPeriodPrevAgeGender", db.name,".pdf")
+
+pdf(here("Results",db.name, plotname),
+    width = 15, height = 7)
+print(plotAgeGender, newpage = FALSE)
+dev.off()
+
+
+#######################################################
+# incidence of drugs within a dementia/Drug population
+#######################################################
+# dementia strata definition includes those with either a dementia diagnosis OR drug
+
+
+
+
+
 #######################################################
 # incidence of drugs within a general population
 #######################################################

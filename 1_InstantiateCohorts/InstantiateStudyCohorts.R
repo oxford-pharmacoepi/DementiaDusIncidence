@@ -33,6 +33,23 @@ cdm <- generateCohortSet(cdm, strata_cohorts,
 
 info(logger, "- got strata")
 
+
+info(logger, "- getting strata updated definitions")
+strata_cohorts1 <- readCohortSet(here(
+  "1_InstantiateCohorts",
+  "StrataCohorts",
+  "DrugDiagDem"
+))
+
+info(logger, "- getting strata updated updated")
+cdm <- generateCohortSet(cdm, strata_cohorts1,
+                         cohortTableName = strata_table_name1,
+                         overwrite = TRUE
+)
+
+
+info(logger, "- got strata updated")
+
 # instantiate feature cohorts (disease)
 # info(logger, "- getting feature for diseases definitions")
 # 
