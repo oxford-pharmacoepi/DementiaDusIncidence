@@ -33,7 +33,6 @@ cdm <- generateCohortSet(cdm, strata_cohorts,
 
 info(logger, "- got strata")
 
-
 info(logger, "- getting strata updated definitions")
 strata_cohorts1 <- readCohortSet(here(
   "1_InstantiateCohorts",
