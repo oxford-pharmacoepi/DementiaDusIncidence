@@ -524,6 +524,13 @@ inc_new <- estimateIncidence(
   returnParticipants = TRUE
 )
 
+study_results2 <- gatherIncidencePrevalenceResults(cdm = cdm, 
+                                                 list(inc),
+                                                 databaseName = db.name)
+
+exportIncidencePrevalenceResults(result=study_results2,
+                                 zipName= paste0(db.name, "IPResultsNewDemDef"),
+                                 outputFolder=here::here("Results", db.name))
 
 #######################################################
 # incidence of drugs within a general population
