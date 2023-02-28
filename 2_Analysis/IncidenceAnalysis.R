@@ -434,7 +434,7 @@ plotAge <- plotAge + facet_wrap(~denominator_age_group, labeller=labeller(denomi
   theme(strip.background = element_rect(colour="black", fill=NA),
         panel.border = element_rect(fill = NA, color = "black"))
 
-plotname <- paste0("4DrugIncidenceRatesAge", db.name,".pdf")
+plotname <- paste0("4DrugPeriodPrevAge", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 15, height = 5)
@@ -995,7 +995,7 @@ info(logger, "- Gathered dementia incidence: general population")
 print(paste0("- Exporting dementia incidence: general population"))
 info(logger, "- Exporting dementia incidence: general population")
 
-exportIncidencePrevalenceResults(result=study_results,
+exportIncidencePrevalenceResults(result=study_resultsDEM,
                                  zipName= paste0(db.name, "IPResults4Dementia"),
                                  outputFolder=here::here("Results", db.name))
 
