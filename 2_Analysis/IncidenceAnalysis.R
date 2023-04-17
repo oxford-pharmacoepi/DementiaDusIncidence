@@ -17,7 +17,8 @@ if (db.name == "SIDIAP") {
   } else {
     
     startdate =  as.Date("2007-01-01")
-    enddate = as.Date("2020-01-01") # CPRD GOLD up to aug 2020
+    #enddate = as.Date("2020-01-01") # CPRD GOLD up to aug 2020
+    enddate = as.Date("2019-12-31")
     
   }
 
@@ -38,8 +39,7 @@ cdm$denominator <- generateDenominatorCohortSet(
   verbose = TRUE
 )
 
-#cdm$denominator %>% tally() # to check numbers in denominator population
-#attrition(cdm$denominator) # to grab the attrition
+#cohortCount(cdm$denominator)
 
 print(paste0("- Got denominator: dementia population"))
 info(logger, "- Got denominator: dementia population")
@@ -53,13 +53,12 @@ inc <- estimateIncidence(
   cdm = cdm,
   denominatorTable = "denominator",
   outcomeTable = outcome_table_name,
-  outcomeCohortId = outcome_cohorts$cohortId,
-  outcomeCohortName = outcome_cohorts$cohortName,
+  outcomeCohortId = outcome_cohorts$cohort_definition_id,
   interval = c("years", "overall"),
   outcomeWashout = NULL,
   repeatedEvents = FALSE,
   minCellCount = 5,
-  returnParticipants = TRUE
+  verbose = TRUE
 )
 
 
@@ -71,15 +70,8 @@ info(logger, "- Got drug incidence: dementia population")
 print(paste0("- Gathering drug incidence results: dementia population"))
 info(logger, "- Gathering drug incidence results: dementia population")
 
-#dplyr::glimpse(study_results$incidence_estimates)
-
 study_results<- gatherIncidencePrevalenceResults(cdm = cdm, 
-                                                 list(inc),
-                                                 databaseName = db.name)
-
-#save the settings for incidence
-settings_inc <- settings(inc)
-write.csv(settings_inc ,file = here::here(output.folder, "SettingsInc.csv"))
+                                                 list(inc))
 
 print(paste0("- Got drug incidence results: dementia population"))
 info(logger, "- Got drug incidence results: dementia population")
@@ -99,7 +91,7 @@ info(logger, "- Exported drug incidence results: dementia population")
 print(paste0("- Extracting patient characteristics: dementia population"))
 info(logger, "- Extracting patient characteristics: dementia population")
 
-#source(here("2_Analysis","Table1.R"))
+source(here("2_Analysis","Table1.R"))
 
 print(paste0("- Extracted patient characteristics: dementia population"))
 info(logger, "- Extracted patient characteristics: dementia population")
@@ -280,9 +272,8 @@ print(paste0("- Plotted drug incidence results: dementia population"))
 info(logger, "- Plotted drug incidence results: dementia population")
 
 
-if (db.name == "CPRDAurum" |
-    db.name == "CPRDAurumCovid" |
-    db.name == "CPRDGold") {
+
+if (grepl("CPRD", db.name) == TRUE) {
   
   
 #######################################################
@@ -293,7 +284,6 @@ prev_period <- estimatePeriodPrevalence(
     cdm = cdm,
     denominatorTable = "denominator",
     outcomeCohortId = outcome_cohorts$cohortId,
-    outcomeCohortName = outcome_cohorts$cohortName,
     outcomeLookbackDays = 0, 
     outcomeTable = outcome_table_name,
     interval = "years" ,
