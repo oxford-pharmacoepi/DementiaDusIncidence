@@ -2,66 +2,66 @@
   "ConceptSets": [
     {
       "id": 0,
-      "name": "AntiDementiaDrug",
+      "name": "antiDementiaDrug",
       "expression": {
         "items": [
           {
             "concept": {
-              "CONCEPT_CLASS_ID": "ATC 5th",
-              "CONCEPT_CODE": "N06DA03",
-              "CONCEPT_ID": 21604796,
-              "CONCEPT_NAME": "rivastigmine; oral, transdermal",
+              "CONCEPT_CLASS_ID": "Ingredient",
+              "CONCEPT_CODE": "135447",
+              "CONCEPT_ID": 715997,
+              "CONCEPT_NAME": "donepezil",
               "DOMAIN_ID": "Drug",
               "INVALID_REASON": "V",
               "INVALID_REASON_CAPTION": "Valid",
-              "STANDARD_CONCEPT": "C",
-              "STANDARD_CONCEPT_CAPTION": "Classification",
-              "VOCABULARY_ID": "ATC"
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "RxNorm"
             },
             "includeDescendants": true
           },
           {
             "concept": {
-              "CONCEPT_CLASS_ID": "ATC 5th",
-              "CONCEPT_CODE": "N06DX01",
-              "CONCEPT_ID": 21604799,
-              "CONCEPT_NAME": "memantine; oral",
+              "CONCEPT_CLASS_ID": "Ingredient",
+              "CONCEPT_CODE": "4637",
+              "CONCEPT_ID": 757627,
+              "CONCEPT_NAME": "galantamine",
               "DOMAIN_ID": "Drug",
               "INVALID_REASON": "V",
               "INVALID_REASON_CAPTION": "Valid",
-              "STANDARD_CONCEPT": "C",
-              "STANDARD_CONCEPT_CAPTION": "Classification",
-              "VOCABULARY_ID": "ATC"
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "RxNorm"
             },
             "includeDescendants": true
           },
           {
             "concept": {
-              "CONCEPT_CLASS_ID": "ATC 5th",
-              "CONCEPT_CODE": "N06DA02",
-              "CONCEPT_ID": 21604795,
-              "CONCEPT_NAME": "donepezil; oral",
+              "CONCEPT_CLASS_ID": "Ingredient",
+              "CONCEPT_CODE": "6719",
+              "CONCEPT_ID": 701322,
+              "CONCEPT_NAME": "memantine",
               "DOMAIN_ID": "Drug",
               "INVALID_REASON": "V",
               "INVALID_REASON_CAPTION": "Valid",
-              "STANDARD_CONCEPT": "C",
-              "STANDARD_CONCEPT_CAPTION": "Classification",
-              "VOCABULARY_ID": "ATC"
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "RxNorm"
             },
             "includeDescendants": true
           },
           {
             "concept": {
-              "CONCEPT_CLASS_ID": "ATC 5th",
-              "CONCEPT_CODE": "N06DA04",
-              "CONCEPT_ID": 21604797,
-              "CONCEPT_NAME": "galantamine; oral",
+              "CONCEPT_CLASS_ID": "Ingredient",
+              "CONCEPT_CODE": "183379",
+              "CONCEPT_ID": 733523,
+              "CONCEPT_NAME": "rivastigmine",
               "DOMAIN_ID": "Drug",
               "INVALID_REASON": "V",
               "INVALID_REASON_CAPTION": "Valid",
-              "STANDARD_CONCEPT": "C",
-              "STANDARD_CONCEPT_CAPTION": "Classification",
-              "VOCABULARY_ID": "ATC"
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "RxNorm"
             },
             "includeDescendants": true
           }
@@ -73,13 +73,12 @@
     "CriteriaList": [
       {
         "DrugExposure": {
-          "CodesetId": 0,
-          "First": true
+          "CodesetId": 0
         }
       }
     ],
     "ObservationWindow": {
-      "PriorDays": 365,
+      "PriorDays": 0,
       "PostDays": 0
     },
     "PrimaryCriteriaLimit": {
