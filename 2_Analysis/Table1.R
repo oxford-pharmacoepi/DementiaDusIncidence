@@ -323,17 +323,17 @@ write_csv(
 #   compute()
 
 
-# remove smokers who are now previous smokers
-Pop <- Pop %>%
-  mutate(Smoker_date = replace(Smoker_date, Smoker_date < PrevSmoker_date, NA))
-
-# replace the dates with text and remove the dates
-Pop <- Pop %>%
-  mutate(SmokingStatus = NA,
-         SmokingStatus = replace(SmokingStatus, !is.na(Smoker_date), "Smoker"),
-         SmokingStatus = replace(SmokingStatus, !is.na(PrevSmoker_date), "Previous Smoker"),
-         SmokingStatus = replace(SmokingStatus, !is.na(non_smoker_date), "Non Smoker")) %>%
-  select(!c(Smoker_date, PrevSmoker_date, non_smoker_date))
+# # remove smokers who are now previous smokers
+# Pop <- Pop %>%
+#   mutate(Smoker_date = replace(Smoker_date, Smoker_date < PrevSmoker_date, NA))
+# 
+# # replace the dates with text and remove the dates
+# Pop <- Pop %>%
+#   mutate(SmokingStatus = NA,
+#          SmokingStatus = replace(SmokingStatus, !is.na(Smoker_date), "Smoker"),
+#          SmokingStatus = replace(SmokingStatus, !is.na(PrevSmoker_date), "Previous Smoker"),
+#          SmokingStatus = replace(SmokingStatus, !is.na(non_smoker_date), "Non Smoker")) %>%
+#   select(!c(Smoker_date, PrevSmoker_date, non_smoker_date))
 
 
   
