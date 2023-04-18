@@ -9,11 +9,6 @@ outcome_cohorts <- CDMConnector::readCohortSet(here(
 info(logger, "- getting outcomes")
 
 
-# cdm <- CDMConnector::generateCohortSet(cdm, outcome_cohorts,
-#                          cohortTableName = outcome_table_name,
-#                          overwrite = TRUE
-# )
-
 cdm <- CDMConnector::generateCohortSet(cdm, 
                                        outcome_cohorts,
                                        name = outcome_table_name,

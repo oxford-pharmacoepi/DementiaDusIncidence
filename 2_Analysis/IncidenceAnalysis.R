@@ -12,12 +12,11 @@ info(logger, "- Getting denominator: dementia population")
 if (db.name == "SIDIAP") {
   
   startdate =  as.Date("2010-01-01")
-  enddate = as.Date("2021-12-31")
+  enddate = as.Date("2020-12-31")
   
   } else {
     
     startdate =  as.Date("2007-01-01")
-    #enddate = as.Date("2020-01-01") # CPRD GOLD up to aug 2020
     enddate = as.Date("2019-12-31")
     
   }
@@ -91,7 +90,14 @@ info(logger, "- Exported drug incidence results: dementia population")
 print(paste0("- Extracting patient characteristics: dementia population"))
 info(logger, "- Extracting patient characteristics: dementia population")
 
+#table_one_analysis 
+if (table_one_analysis == TRUE) {
+  
 source(here("2_Analysis","Table1.R"))
+  
+} else {
+
+print("Not running table 1 characterisation") }
 
 print(paste0("- Extracted patient characteristics: dementia population"))
 info(logger, "- Extracted patient characteristics: dementia population")
