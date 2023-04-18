@@ -24,7 +24,7 @@ inc_overall <- estimateIncidence(
 outcomes <- incidenceSet(inc_overall) %>% 
   arrange(analysis_id)
 
-# get BMI no longer in use
+# get BMI
 # remove any records after the study date and remove any BMI outside of normal ranges
 # will do this once as takes time to compute
 # BMI <- cdm$measurement %>%
@@ -111,7 +111,7 @@ working_participants <- working_participants %>%
                                   ifelse(charlson>=3, "3+", NA )))))
 
 
-# join working_participants with BMI no longer in use for study
+# join working_participants with BMI
 # BMI_results <- working_participants %>% 
 #   left_join(BMI %>% 
 #               select(person_id, value_as_number,measurement_date) %>%
@@ -133,8 +133,6 @@ working_participants <- working_participants %>%
 # working_participants <- working_participants %>% 
 #   left_join(BMI_results %>% 
 #               select(subject_id, bmi.all_time,bmi.measurement_date), by = c("subject_id"))
-
-# column names due to bug in inc/prev
 
 working_table <- bind_rows(
     working_participants %>% 

@@ -1,9 +1,10 @@
+# Manage project dependencies ------
+# the following will prompt you to install the various packages used in the study 
+renv::activate()
+renv::restore()
+
 # Load packages ------
 
-# to install latest version of IncidencePrevalence
-#remotes::install_github("darwin-eu-dev/IncidencePrevalence",force = TRUE)
-
-# load r packages
 library(SqlRender)
 library(CirceR)
 library(IncidencePrevalence)
@@ -16,9 +17,11 @@ library(log4r)
 library(stringr)
 library(CDMConnector)
 library(ggplot2)
+library(RPostgres)
+library(PatientProfiles)
 
 # database metadata and connection details -----
-# The name/ acronym for the database (for CPRD AURUM please use "CPRDAurum" and for SIDIAP use "SIDIAP" )
+# The name/ acronym for the database (for CPRD GOLD please use "CPRDGOLD" and for SIDIAP use "SIDIAP" )
 db.name<-"..."
 
 # Set output folder location -----
@@ -54,7 +57,7 @@ cdm_database_schema<-"..."
 
 # The name of the schema that contains the vocabularies 
 # (often this will be the same as cdm_database_schema)
-vocabulary_database_schema<-cdm_database_schema
+vocabulary_database_schema<-"..."
 
 # The name of the schema where results tables will be created 
 results_database_schema<-"..."
@@ -62,7 +65,10 @@ results_database_schema<-"..."
 # Name of outcome table in the result table where the outcome cohorts will be stored
 # Note, if there is an existing table in your results schema with the same names
 # it will be overwritten 
-outcome_table_stem<-"..."
+outcome_table_stem <-"..."
+
+# run table 1 (note this takes a long time)
+table_one_analysis <- FALSE
 
 # create cdm reference ----
 cdm <- CDMConnector::cdm_from_con(con = db, 
@@ -78,3 +84,5 @@ cdm$person %>%
 source(here("RunStudy.R"))
 # after the study is run you should have a zip folder in your output folder to share
 
+# Disconnect from the database
+#db(disconnect)
