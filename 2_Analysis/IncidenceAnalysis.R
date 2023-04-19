@@ -289,18 +289,17 @@ if (grepl("CPRD", db.name) == TRUE) {
 prev_period <- estimatePeriodPrevalence(
     cdm = cdm,
     denominatorTable = "denominator",
-    outcomeCohortId = outcome_cohorts$cohortId,
     outcomeLookbackDays = 0, 
     outcomeTable = outcome_table_name,
     interval = "years" ,
     completeDatabaseIntervals = TRUE, # prev only estimate for intervals where db captures all of the interval
     fullContribution = FALSE , # individuals only required to be present for one day in interval
-    minCellCount = 5
+    minCellCount = 5,
+    verbose = TRUE
   )
   
 study_resultsPrevDrug <- gatherIncidencePrevalenceResults(cdm = cdm,
-                                                               list(prev_period),
-                                                               databaseName = db.name)
+                                                               list(prev_period))
 
 
 exportIncidencePrevalenceResults(result=study_resultsPrevDrug,
@@ -506,18 +505,16 @@ inc_new <- estimateIncidence(
   cdm = cdm,
   denominatorTable = "denominator1",
   outcomeTable = outcome_table_name,
-  outcomeCohortId = outcome_cohorts$cohortId,
-  outcomeCohortName = outcome_cohorts$cohortName,
+  outcomeCohortId = outcome_cohorts$cohort_definition_id,
   interval = c("years", "overall"),
   outcomeWashout = NULL,
   repeatedEvents = FALSE,
   minCellCount = 5,
-  returnParticipants = TRUE
+  verbose = TRUE
 )
 
 study_results2 <- gatherIncidencePrevalenceResults(cdm = cdm, 
-                                                 list(inc_new),
-                                                 databaseName = db.name)
+                                                 list(inc_new))
 
 exportIncidencePrevalenceResults(result=study_results2,
                                  zipName= paste0(db.name, "IPResultsNewDemDef"),
@@ -698,7 +695,7 @@ dev.off()
 print(paste0("- Getting denominator: general population"))
 info(logger, "- Getting denominator: general population")
 
-cdm$denominator <- generateDenominatorCohortSet(
+cdm$denominatorall <- generateDenominatorCohortSet(
   cdm = cdm,
   startDate = startdate,
   endDate = enddate ,
@@ -723,16 +720,15 @@ info(logger, "- Got denominator: general population")
 print(paste0("- Getting drug incidence: general population"))
 info(logger, "- Getting drug incidence: general population")
 
-inc <- estimateIncidence(
+inc1 <- estimateIncidence(
   cdm = cdm,
-  denominatorTable = "denominator",
+  denominatorTable = "denominatorall",
   outcomeTable = outcome_table_name,
-  outcomeCohortId = outcome_cohorts$cohortId,
-  outcomeCohortName = outcome_cohorts$cohortName,
   interval = c("years", "overall"),
   outcomeWashout = NULL,
   repeatedEvents = FALSE,
-  minCellCount = 5
+  minCellCount = 5,
+  verbose = TRUE
 )
 
 print(paste0("- Got drug incidence: general population"))
@@ -743,8 +739,7 @@ print(paste0("- Gathering drug incidence results: general population"))
 info(logger, "- Gathering drug incidence results: general population")
 
 study_resultsDrugGeneralPop<- gatherIncidencePrevalenceResults(cdm = cdm,
-                                                               list(inc),
-                                                               databaseName = db.name)
+                                                               list(inc1))
 
 print(paste0("- Gathered drug incidence results: general population"))
 info(logger, "- Gathered drug incidence results: general population")
@@ -954,16 +949,15 @@ info(logger, "- Plotted drug incidence results: general population")
 print(paste0("- Getting dementia incidence: general population"))
 info(logger, "- Getting dementia incidence: general population")
 
-inc <- estimateIncidence(
+inc2 <- estimateIncidence(
   cdm = cdm,
-  denominatorTable = "denominator",
+  denominatorTable = "denominatorall",
   outcomeTable = strata_table_name,
-  outcomeCohortId = strata_cohorts$cohortId,
-  outcomeCohortName = strata_cohorts$cohortName,
   interval = "years",
   outcomeWashout = NULL,
   repeatedEvents = FALSE,
-  minCellCount = 5
+  minCellCount = 5,
+  verbose = TRUE
 )
 
 
@@ -976,8 +970,7 @@ info(logger, "- Gathering dementia incidence: general population")
 
 
 study_resultsDEM<- gatherIncidencePrevalenceResults(cdm = cdm, 
-                                                    list(inc),
-                                                    databaseName = db.name)
+                                                    list(inc2))
 
 print(paste0("- Gathered dementia incidence: general population"))
 info(logger, "- Gathered dementia incidence: general population")
@@ -1150,20 +1143,18 @@ info(logger, "- Plotted dementia prevalence: general population")
 
 prev_periodDEM <- estimatePeriodPrevalence(
   cdm = cdm,
-  denominatorTable = "denominator",
+  denominatorTable = "denominatorall",
   outcomeTable = strata_table_name,
-  outcomeCohortId = strata_cohorts$cohortId,
-  outcomeCohortName = strata_cohorts$cohortName,
   outcomeLookbackDays = 0, 
   interval = "years" ,
   completeDatabaseIntervals = TRUE, # prev only estimate for intervals where db captures all of the interval
   fullContribution = FALSE , # individuals only required to be present for one day in interval
-  minCellCount = 5
+  minCellCount = 5,
+  verbose = TRUE
 )
 
 study_resultsPrevDem <- gatherIncidencePrevalenceResults(cdm = cdm,
-                                                          list(prev_periodDEM),
-                                                          databaseName = db.name)
+                                                          list(prev_periodDEM))
 
 
 exportIncidencePrevalenceResults(result=study_resultsPrevDem,
@@ -1172,7 +1163,7 @@ exportIncidencePrevalenceResults(result=study_resultsPrevDem,
 
 
 
-# plot the results fordrugs in  whole population in dementia strata
+# plot the results fordrugs 
 pp_yrs_plot <- study_resultsPrevDem[[1]] %>%  
   filter(denominator_cohort_id == 3 ) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "memantine", "Memantine")) %>%
@@ -1341,12 +1332,6 @@ pdf(here("Results",db.name, plotname),
     width = 15, height = 7)
 print(plotAgeGender, newpage = FALSE)
 dev.off()
-
-
-
-
-
-
 
 
 }

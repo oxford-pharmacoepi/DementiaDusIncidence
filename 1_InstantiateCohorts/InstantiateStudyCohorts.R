@@ -57,6 +57,11 @@ cdm <- generateCohortSet(cdm,
 
 info(logger, "- got strata updated")
 
+
+
+if (table_one_analysis == TRUE) {
+
+
 #instantiate feature cohorts (disease)
 info(logger, "- getting feature for diseases definitions")
 
@@ -64,6 +69,7 @@ disease_cohorts <- readCohortSet(here(
   "1_InstantiateCohorts",
   "DiseaseCohorts"
 ))
+
 
 info(logger, "- getting features: diseases")
 
@@ -96,4 +102,8 @@ cdm <- generateCohortSet(cdm,
 #cohortCount(cdm$dementadruginc_medication)
 
 info(logger, "- got features for medications")
+
+} else {
+  
+  print("Not instantiating table 1 cohorts") }
 
