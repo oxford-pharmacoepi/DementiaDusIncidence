@@ -28,16 +28,16 @@ db.name<-"..."
 # the path to a folder where the results from this analysis will be saved
 # to set the location within the project with folder called "ouput, we can use: here("output")
 # but this file path could be set to somewhere else
-output.folder<-here("Results", db.name)
+output.folder<-here("...", db.name)
 
 # Specify databaseConnector connection details -----
 # database connection details
 # connect to database
-user<-"..."
+user<- "..."
 password<- "..."
-port<-"..."
-host<-"..."
-server_dbi<-"..."
+port<- "..."
+host<- "..."
+server_dbi<- "..."
 
 
 # Specify cdm_reference via DBI connection details -----
@@ -67,10 +67,10 @@ results_database_schema<-"..."
 # it will be overwritten 
 outcome_table_stem <-"..."
 
-# run table 1 (note this takes a long time)
-table_one_analysis <- FALSE
+# run table 1
+table_one_analysis <- TRUE
 
-# create cdm reference ----
+# create cdm reference ---- do not change this ----
 cdm <- CDMConnector::cdm_from_con(con = db, 
                                   cdm_schema = cdm_database_schema,
                                   write_schema = results_database_schema)
