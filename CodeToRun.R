@@ -19,6 +19,7 @@ library(CDMConnector)
 library(ggplot2)
 library(RPostgres)
 library(PatientProfiles)
+library(tibble)
 
 # database metadata and connection details -----
 # The name/ acronym for the database (for CPRD GOLD please use "CPRDGOLD" and for SIDIAP use "SIDIAP" )

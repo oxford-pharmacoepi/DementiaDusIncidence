@@ -42,7 +42,7 @@ drugs_names <- c("anyAntiDementiaDrugUser",
 
 # grab the characteristics for each outcome
 characteristics <- list()
-#for(i in seq_along(outcomes$outcome_cohort_name) ){
+
 for(i in seq_along(outcome_cohorts$cohort_name) ){
   cdm$working_participants <- participants(inc_overall, i) %>% 
     select("subject_id", "outcome_start_date") %>% 
@@ -65,21 +65,55 @@ for(i in seq_along(outcome_cohorts$cohort_name) ){
   
   # calculate the charlson
   # update cohorts with different weights
+  if(!'diabetes_with_chronic_complications' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(diabetes_with_chronic_complications = 0)
+  if(!'hemoplegia_or_paralegia' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(hemoplegia_or_paralegia = 0)
+  if(!'renal_disease' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(renal_disease = 0)
+  if(!'any_malignancy' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(any_malignancy = 0)
+  if(!'moderate_to_severe_liver_disease' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(moderate_to_severe_liver_disease = 0)
+  if(!'metastatic_solid_tumor' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(metastatic_solid_tumor = 0)
+  if(!'aids' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(aids = 0)
+  if(!'mild_liver_disease' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(mild_liver_disease = 0)
+  if(!'cerebrovascular_disease' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(cerebrovascular_disease = 0)
+  if(!'myocardial_infarction' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(myocardial_infarction = 0)
+  if(!'congestive_heart_failure' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(congestive_heart_failure = 0)
+  if(!'dementia_charlson' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(dementia_charlson = 0)
+  if(!'chronic_pulmonary_disease' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(chronic_pulmonary_disease = 0)
+  if(!'rheumatologic_disease' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(rheumatologic_disease = 0)
+  if(!'peptic_ulcer_disease' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(peptic_ulcer_disease = 0)
+
 working_participants <- working_participants %>% 
-    mutate(diabetes_with_chronic_complications = ifelse("diabetes_with_chronic_complications" %in% names(.), diabetes_with_chronic_complications, 0)) %>% 
-    mutate(hemoplegia_or_paralegia = ifelse("hemoplegia_or_paralegia" %in% names(.), hemoplegia_or_paralegia, 0)) %>% 
-    mutate(renal_disease = ifelse("renal_disease" %in% names(.), renal_disease, 0)) %>% 
-    mutate(any_malignancy = ifelse("any_malignancy" %in% names(.), any_malignancy, 0)) %>% 
-    mutate(moderate_to_severe_liver_disease = ifelse("moderate_to_severe_liver_disease" %in% names(.), moderate_to_severe_liver_disease, 0)) %>% 
-    mutate(metastatic_solid_tumor = ifelse("metastatic_solid_tumor" %in% names(.), metastatic_solid_tumor, 0)) %>% 
-    mutate(aids = ifelse("aids" %in% names(.), aids, 0)) %>% 
-    mutate(diabetes_with_chronic_complications = ifelse(diabetes_with_chronic_complications == 1, 2, 0)) %>%
+  mutate(diabetes_with_chronic_complications = ifelse(diabetes_with_chronic_complications == 1, 2, 0)) %>%
     mutate(hemoplegia_or_paralegia = ifelse(hemoplegia_or_paralegia == 1, 2, 0)) %>%
     mutate(renal_disease = ifelse(renal_disease == 1, 2, 0)) %>%
     mutate(any_malignancy = ifelse(any_malignancy == 1, 2, 0)) %>%
     mutate(moderate_to_severe_liver_disease = ifelse(moderate_to_severe_liver_disease == 1, 3, 0)) %>%
     mutate(metastatic_solid_tumor = ifelse(metastatic_solid_tumor == 1, 6, 0)) %>% 
     mutate(aids = ifelse(aids == 1, 6, 0)) 
+  
+  
+  
+  
+  
+  
+#if(!'test' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(test = 0)
+  
+    # mutate(diabetes_with_chronic_complications = ifelse("diabetes_with_chronic_complications" %in% names(.), diabetes_with_chronic_complications, 0)) %>% 
+    # mutate(hemoplegia_or_paralegia = ifelse("hemoplegia_or_paralegia" %in% names(.), hemoplegia_or_paralegia, 0)) %>% 
+    # mutate(renal_disease = ifelse("renal_disease" %in% names(.), renal_disease, 0)) %>% 
+    # mutate(any_malignancy = ifelse("any_malignancy" %in% names(.), any_malignancy, 0)) %>% 
+    # mutate(moderate_to_severe_liver_disease = ifelse("moderate_to_severe_liver_disease" %in% names(.), moderate_to_severe_liver_disease, 0)) %>% 
+    # mutate(metastatic_solid_tumor = ifelse("metastatic_solid_tumor" %in% names(.), metastatic_solid_tumor, 0)) %>% 
+    # mutate(aids = ifelse("aids" %in% names(.), aids, 0)) %>% 
+    # mutate(mild_liver_disease = ifelse("mild_liver_disease" %in% names(.), mild_liver_disease, 0)) %>% 
+    # mutate(cerebrovascular_disease = ifelse("cerebrovascular_disease" %in% names(.), cerebrovascular_disease, 0)) %>%  
+    # mutate(myocardial_infarction = ifelse("myocardial_infarction" %in% names(.), myocardial_infarction, 0)) %>%  
+    # mutate(congestive_heart_failure = ifelse("congestive_heart_failure" %in% names(.), congestive_heart_failure, 0)) %>%  
+    # mutate(dementia_charlson = ifelse("dementia_charlson" %in% names(.), dementia_charlson, 0)) %>%  
+    # mutate(chronic_pulmonary_disease = ifelse("chronic_pulmonary_disease" %in% names(.), chronic_pulmonary_disease, 0)) %>%  
+    # mutate(rheumatologic_disease = ifelse("rheumatologic_disease" %in% names(.), rheumatologic_disease, 0)) %>%  
+    # mutate(peptic_ulcer_disease = ifelse("peptic_ulcer_disease" %in% names(.),peptic_ulcer_disease , 0)) %>%  
+    #   
+
 
   #summing the charlson components
   working_participants <- working_participants %>% 
