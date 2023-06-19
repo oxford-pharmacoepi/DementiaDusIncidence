@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.3.0",
+    "Version": "4.2.1",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -11,10 +11,10 @@
   "Packages": {
     "CDMConnector": {
       "Package": "CDMConnector",
-      "Version": "0.5.1",
+      "Version": "1.0.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "e236278d29a4fa21765f328b4a8a3f4a",
+      "Hash": "41f9500b3ff924dfba7f8563b7523e40",
       "Requirements": [
         "DBI",
         "checkmate",
@@ -22,6 +22,7 @@
         "dbplyr",
         "dplyr",
         "fs",
+        "generics",
         "glue",
         "jsonlite",
         "lifecycle",
@@ -31,6 +32,7 @@
         "readr",
         "rlang",
         "stringr",
+        "tidyr",
         "tidyselect",
         "waldo",
         "withr"
@@ -62,10 +64,10 @@
     },
     "IncidencePrevalence": {
       "Package": "IncidencePrevalence",
-      "Version": "0.2.0",
+      "Version": "0.4.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "270a62c451f559302b96cdf9ee96c308",
+      "Hash": "14b9acbb070bb8f933ab0e763fa7cce3",
       "Requirements": [
         "CDMConnector",
         "DBI",
@@ -73,11 +75,13 @@
         "cli",
         "dbplyr",
         "dplyr",
+        "ggplot2",
         "glue",
         "lubridate",
         "magrittr",
         "purrr",
         "rlang",
+        "scales",
         "stringr",
         "tidyr",
         "tidyselect",
@@ -438,20 +442,22 @@
     },
     "ggplot2": {
       "Package": "ggplot2",
-      "Version": "3.3.6",
+      "Version": "3.4.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "0fb26d0674c82705c6b701d1a61e02ea",
+      "Hash": "3a147ee02e85a8941aad9909f1b43b7b",
       "Requirements": [
         "MASS",
-        "digest",
+        "cli",
         "glue",
         "gtable",
         "isoband",
+        "lifecycle",
         "mgcv",
         "rlang",
         "scales",
         "tibble",
+        "vctrs",
         "withr"
       ]
     },
