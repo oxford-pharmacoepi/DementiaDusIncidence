@@ -70,31 +70,6 @@ working_participants <- working_participants %>%
     mutate(moderate_to_severe_liver_disease = ifelse(moderate_to_severe_liver_disease == 1, 3, 0)) %>%
     mutate(metastatic_solid_tumor = ifelse(metastatic_solid_tumor == 1, 6, 0)) %>% 
     mutate(aids = ifelse(aids == 1, 6, 0)) 
-  
-  
-  
-  
-  
-  
-#if(!'test' %in% names(working_participants)) working_participants <- working_participants %>% tibble::add_column(test = 0)
-  
-    # mutate(diabetes_with_chronic_complications = ifelse("diabetes_with_chronic_complications" %in% names(.), diabetes_with_chronic_complications, 0)) %>% 
-    # mutate(hemoplegia_or_paralegia = ifelse("hemoplegia_or_paralegia" %in% names(.), hemoplegia_or_paralegia, 0)) %>% 
-    # mutate(renal_disease = ifelse("renal_disease" %in% names(.), renal_disease, 0)) %>% 
-    # mutate(any_malignancy = ifelse("any_malignancy" %in% names(.), any_malignancy, 0)) %>% 
-    # mutate(moderate_to_severe_liver_disease = ifelse("moderate_to_severe_liver_disease" %in% names(.), moderate_to_severe_liver_disease, 0)) %>% 
-    # mutate(metastatic_solid_tumor = ifelse("metastatic_solid_tumor" %in% names(.), metastatic_solid_tumor, 0)) %>% 
-    # mutate(aids = ifelse("aids" %in% names(.), aids, 0)) %>% 
-    # mutate(mild_liver_disease = ifelse("mild_liver_disease" %in% names(.), mild_liver_disease, 0)) %>% 
-    # mutate(cerebrovascular_disease = ifelse("cerebrovascular_disease" %in% names(.), cerebrovascular_disease, 0)) %>%  
-    # mutate(myocardial_infarction = ifelse("myocardial_infarction" %in% names(.), myocardial_infarction, 0)) %>%  
-    # mutate(congestive_heart_failure = ifelse("congestive_heart_failure" %in% names(.), congestive_heart_failure, 0)) %>%  
-    # mutate(dementia_charlson = ifelse("dementia_charlson" %in% names(.), dementia_charlson, 0)) %>%  
-    # mutate(chronic_pulmonary_disease = ifelse("chronic_pulmonary_disease" %in% names(.), chronic_pulmonary_disease, 0)) %>%  
-    # mutate(rheumatologic_disease = ifelse("rheumatologic_disease" %in% names(.), rheumatologic_disease, 0)) %>%  
-    # mutate(peptic_ulcer_disease = ifelse("peptic_ulcer_disease" %in% names(.),peptic_ulcer_disease , 0)) %>%  
-    #   
-
 
   #summing the charlson components
   working_participants <- working_participants %>% 
@@ -125,29 +100,6 @@ working_participants <- working_participants %>%
                            ifelse(charlson==2, "2",
                                   ifelse(charlson>=3, "3+", NA )))))
 
-
-# join working_participants with BMI
-# BMI_results <- working_participants %>% 
-#   left_join(BMI %>% 
-#               select(person_id, value_as_number,measurement_date) %>%
-#               rename(bmi.all_time=value_as_number,
-#                      bmi.measurement_date=measurement_date), by = c("subject_id" = "person_id")) %>% 
-#   mutate(BMI_valid = cohort_start_date > bmi.measurement_date ) %>% 
-#   filter(BMI_valid == TRUE) # remove any BMI values after the cohort start date
-#   
-# #get the closest value to the cohort start date
-# BMI_results <- BMI_results %>% 
-#   arrange(subject_id, desc(bmi.measurement_date)) %>% 
-#   group_by(subject_id) %>% 
-#   mutate(seq=1:length(subject_id)) %>%  
-#   filter(seq==1) %>% 
-#   select(-seq) %>% 
-#   ungroup()
-# 
-# # merge results back into working participants
-# working_participants <- working_participants %>% 
-#   left_join(BMI_results %>% 
-#               select(subject_id, bmi.all_time,bmi.measurement_date), by = c("subject_id"))
 
 working_table <- bind_rows(
     working_participants %>% 
@@ -259,94 +211,5 @@ write_csv(
   table_characteristics, 
   here::here("Results", db.name, paste0("table_characteristics", cdmName(cdm), ".csv"))
 )
-
-
-# extra code not used
-#SMOKING
-# Non smokers
-# Pop <- 
-#   Pop %>% 
-#   left_join(
-#  Pop %>%
-#   select("person_id", "outcome_start_date") %>% 
-#   inner_join(cdm$observation %>%
-#                filter( observation_concept_id == 4222303 ) , 
-#              by=c("person_id"), copy = TRUE)  %>% 
-#   filter(observation_date < outcome_start_date) %>% # removes anyone with a observation after outcome
-#   filter(observation_date > outcome_start_date - days(1826) ) %>% # removes anyone with observation more than 5 years before the outcome
-#   select(c(person_id, observation_date, outcome_start_date)) %>% 
-#   distinct() %>%
-#   group_by(person_id, outcome_start_date) %>%
-#   filter(observation_date == max(observation_date)) %>%
-#   rename("non_smoker_date"="observation_date"),
-#  by= c("person_id", "outcome_start_date")) %>% 
-#   compute()
-# 
-# # Smokers
-# Pop <- 
-#   Pop %>% 
-#   left_join(
-#     Pop %>%
-#       select("person_id", "outcome_start_date") %>% 
-#       inner_join(cdm$observation %>%
-#                    filter( 
-#                      observation_concept_id == 4141787 | # Smoking started
-#                        observation_concept_id == 44789712 | # want to stop smoking
-#                        observation_concept_id == 40486518 | # failed attempt to stop smoking
-#                        observation_concept_id == 	4046886 | # smoking reduced 
-#                        observation_concept_id == 4058137 | # tried giving up smoking
-#                        observation_concept_id == 4216174 | # not interested in giving up smoking
-#                        observation_concept_id == 4215409 | # Ready to stop smoking
-#                        observation_concept_id == 4190573 | # Thinking about stopping smoking
-#                        observation_concept_id == 4052948 | # Keeps trying to stop smoking
-#                        observation_concept_id ==  4144271 | # Tobacco smoking consumption
-#                        observation_concept_id == 4298794
-#                      ) , 
-#                  by=c("person_id"), copy = TRUE)  %>% 
-#       filter(observation_date < outcome_start_date) %>% # removes anyone with a observation after outcome
-#       filter(observation_date > outcome_start_date - days(1826) ) %>% # removes anyone with observation more than 5 years before the outcome
-#       select(c(person_id, observation_date, outcome_start_date)) %>% 
-#       distinct() %>%
-#       group_by(person_id, outcome_start_date) %>%
-#       filter(observation_date == max(observation_date)) %>%
-#       rename("Smoker_date"="observation_date"),
-#     by= c("person_id", "outcome_start_date")) %>% 
-#   compute()
-# 
-# # previous smokers
-# Pop <- 
-#   Pop %>% 
-#   left_join(
-#     Pop %>%
-#       select("person_id", "outcome_start_date") %>% 
-#       inner_join(cdm$observation %>%
-#                    filter( 
-#                      observation_concept_id == 4052032 | # stopped smoking
-#                        observation_concept_id == 4052466 # date ceased smoking
-#                    ) , 
-#                  by=c("person_id"), copy = TRUE)  %>% 
-#       filter(observation_date < outcome_start_date) %>% # removes anyone with a observation after outcome
-#       filter(observation_date > outcome_start_date - days(1826) ) %>% # removes anyone with observation more than 5 years before the outcome
-#       select(c(person_id, observation_date, outcome_start_date)) %>% 
-#       distinct() %>%
-#       group_by(person_id, outcome_start_date) %>%
-#       filter(observation_date == max(observation_date)) %>%
-#       rename("PrevSmoker_date"="observation_date"),
-#     by= c("person_id", "outcome_start_date")) %>% 
-#   compute()
-
-
-# # remove smokers who are now previous smokers
-# Pop <- Pop %>%
-#   mutate(Smoker_date = replace(Smoker_date, Smoker_date < PrevSmoker_date, NA))
-# 
-# # replace the dates with text and remove the dates
-# Pop <- Pop %>%
-#   mutate(SmokingStatus = NA,
-#          SmokingStatus = replace(SmokingStatus, !is.na(Smoker_date), "Smoker"),
-#          SmokingStatus = replace(SmokingStatus, !is.na(PrevSmoker_date), "Previous Smoker"),
-#          SmokingStatus = replace(SmokingStatus, !is.na(non_smoker_date), "Non Smoker")) %>%
-#   select(!c(Smoker_date, PrevSmoker_date, non_smoker_date))
-
 
   
