@@ -27,9 +27,12 @@ db.name<-"..."
 
 # Set output folder location -----
 # the path to a folder where the results from this analysis will be saved
-# to set the location within the project with folder called "ouput, we can use: here("output")
+# to set the location within the project with folder called "output, we can use: here("output")
 # but this file path could be set to somewhere else
-output.folder<-here("...", db.name)
+if (!file.exists("Results")){
+  dir.create("Results", recursive = TRUE)}
+
+output.folder<-here("Results", db.name)
 
 # Specify databaseConnector connection details -----
 # database connection details
@@ -83,7 +86,7 @@ cdm$person %>%
 
 # Run the study ------
 source(here("RunStudy.R"))
-# after the study is run you should have a zip folder in your output folder to share
+# after the study is run please export the results folder to share
 
 # Disconnect from the database
 #db(disconnect)

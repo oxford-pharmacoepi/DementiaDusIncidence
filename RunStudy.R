@@ -7,9 +7,6 @@ feature_disease_table_name <-paste0(outcome_table_stem,"_disease")
 feature_medication_table_name <-paste0(outcome_table_stem,"_medication")
 
 # output files ----
-if (!file.exists("Results")){
-  dir.create("Results", recursive = TRUE)}
-
 if (!file.exists(output.folder)){
   dir.create(output.folder, recursive = TRUE)}
 

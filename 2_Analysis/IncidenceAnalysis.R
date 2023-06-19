@@ -21,10 +21,10 @@ if (db.name == "SIDIAP") {
     
   }
 
-cdm$denominator <- generateDenominatorCohortSet(
+cdm <- generateDenominatorCohortSet(
   cdm = cdm,
-  startDate = startdate,
-  endDate = enddate ,
+  name = "denominator",
+  cohortDateRange = c(startdate, enddate),
   strataTable = strata_table_name ,
   strataCohortId = 1 ,
   ageGroup =list(
@@ -34,8 +34,7 @@ cdm$denominator <- generateDenominatorCohortSet(
     c(80, 150)
   ),
   sex = c("Male", "Female", "Both"),
-  daysPriorHistory = 365,
-  verbose = TRUE
+  daysPriorHistory = 365
 )
 
 #cohortCount(cdm$denominator)
@@ -54,34 +53,24 @@ inc <- estimateIncidence(
   outcomeTable = outcome_table_name,
   outcomeCohortId = outcome_cohorts$cohort_definition_id,
   interval = c("years", "overall"),
-  outcomeWashout = NULL,
+  outcomeWashout = Inf,
   repeatedEvents = FALSE,
-  minCellCount = 5,
-  verbose = TRUE
+  minCellCount = 5
 )
 
 
 print(paste0("- Got drug incidence: dementia population"))
 info(logger, "- Got drug incidence: dementia population")
 
-
-# Get the results ----------------
-print(paste0("- Gathering drug incidence results: dementia population"))
-info(logger, "- Gathering drug incidence results: dementia population")
-
-study_results<- gatherIncidencePrevalenceResults(cdm = cdm, 
-                                                 list(inc))
-
-print(paste0("- Got drug incidence results: dementia population"))
-info(logger, "- Got drug incidence results: dementia population")
-
 # Export the results -----
 print(paste0("- Exporting drug incidence results: dementia population"))
 info(logger, "- Exporting drug incidence results: dementia population")
 
-exportIncidencePrevalenceResults(result=study_results,
-                                 zipName= paste0(db.name, "IPResults"),
-                                 outputFolder=here::here("Results", db.name))
+exportIncidencePrevalenceResults(
+  resultList = list("incidence" = inc),
+  zipName = paste0(db.name, "IPResults"),
+  outputFolder = here::here("Results", db.name)
+)
 
 print(paste0("- Exported drug incidence results: dementia population"))
 info(logger, "- Exported drug incidence results: dementia population")

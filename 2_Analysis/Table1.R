@@ -1,7 +1,7 @@
 # incidence overall - for participants -----
 # going to return participants so we can use them for patient profiles
 overall_denominator_id <- cohortSet(cdm$denominator) %>% 
-  filter(age_group == "40;150") %>% 
+  filter(age_group == "40 to 150") %>% 
   filter(sex == "Both") %>% 
   pull(cohort_definition_id)
 
@@ -12,38 +12,19 @@ inc_overall <- estimateIncidence(
   denominatorCohortId = overall_denominator_id,
   outcomeTable = outcome_table_name,
   interval = "overall",
-  outcomeWashout = NULL,
+  outcomeWashout = Inf,
   repeatedEvents = FALSE,
   minCellCount = 5,
-  verbose = TRUE,
-  returnParticipants = TRUE,
-  tablePrefix = paste0(outcome_table_stem, "_overall_inc")
+  temporary = FALSE,
+  returnParticipants = TRUE
 )
 
-#grabs the outcomes from the inc_overall analysis
-outcomes <- incidenceSet(inc_overall) %>% 
-  arrange(analysis_id)
-
-# get BMI
-# remove any records after the study date and remove any BMI outside of normal ranges
-# will do this once as takes time to compute
-# BMI <- cdm$measurement %>%
-#   filter(measurement_concept_id == 3038553) %>%
-#   filter(measurement_date < enddate) %>%
-#   filter(value_as_number >= 15) %>% 
-#   filter(value_as_number< 60) %>% 
-#   collect()
-
-drugs_names <- c("anyAntiDementiaDrugUser",
-                 "galantamine",
-                 "rivastigmine",
-                 "memantine",
-                 "donepezil")
+drugs_names <- inc_overall$outcome_cohort_name
 
 # grab the characteristics for each outcome
 characteristics <- list()
 
-for(i in seq_along(outcome_cohorts$cohort_name) ){
+for(i in seq_along(inc_overall$outcome_cohort_id) ){
   cdm$working_participants <- participants(inc_overall, i) %>% 
     select("subject_id", "outcome_start_date") %>% 
     filter(!is.na(outcome_start_date)) %>% 
