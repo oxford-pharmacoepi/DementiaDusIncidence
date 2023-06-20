@@ -29,7 +29,7 @@ source(here("2_Analysis","IncidenceAnalysis.R"))
 info(logger, 'INCIDENCE RATE ANALYSIS RAN')
 
 print("Done!")
-print("-- If all has worked, there should now be a zip folder with your results in the output folder to share")
+print("-- If all has worked, you can export the Results folder to share")
 print("-- Thank you for running the study!")
 Sys.time()-start
 readLines(log_file)
