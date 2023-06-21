@@ -17,7 +17,7 @@ if (db.name == "SIDIAP") {
   } else {
     
     startdate =  as.Date("2007-01-01")
-    enddate = as.Date("2019-12-31")
+    enddate = as.Date("2020-12-31")
     
   }
 
