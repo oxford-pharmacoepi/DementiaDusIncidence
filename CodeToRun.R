@@ -1,10 +1,9 @@
 # Manage project dependencies ------
 # the following will prompt you to install the various packages used in the study 
-renv::activate()
+#renv::activate()
 renv::restore()
 
 # Load packages ------
-
 library(SqlRender)
 library(CirceR)
 library(IncidencePrevalence)
