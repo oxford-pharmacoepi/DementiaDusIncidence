@@ -1022,7 +1022,7 @@ plotAge <- plotAge + facet_wrap(~denominator_age_group, labeller=labeller(denomi
   theme(strip.background = element_rect(colour="black", fill=NA),
         panel.border = element_rect(fill = NA, color = "black"))
 
-plotname <- paste0("6DemPeriodPrevAge", db.name,".pdf")
+plotname <- paste0("5DemPeriodPrevAge", db.name,".pdf")
 
 pdf(here("Results",db.name, plotname),
     width = 15, height = 5)
