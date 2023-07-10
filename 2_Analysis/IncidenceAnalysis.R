@@ -103,7 +103,7 @@ inc_yrs_plot <- inc %>%  # need to amend this bit of code to select the estimate
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -139,7 +139,7 @@ inc_yrs_plot1 <- inc %>%  # need to amend this bit of code to select the estimat
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%  
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -181,7 +181,7 @@ inc_yrs_plot2 <- inc %>%  # need to amend this bit of code to select the estimat
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -227,7 +227,7 @@ inc_yrs_plot <- inc %>%  # need to amend this bit of code to select the estimate
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -297,7 +297,7 @@ pp_yrs_plot <- prev_period %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(prevalence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -334,7 +334,7 @@ prev_yrs_plot1 <- prev_period %>%  # need to amend this bit of code to select th
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(prevalence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -377,7 +377,7 @@ prev_yrs_plot2 <- prev_period %>%  # need to amend this bit of code to select th
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(prevalence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -424,7 +424,7 @@ prev_yrs_plot <- prev_period %>%  # need to amend this bit of code to select the
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(prevalence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -527,7 +527,7 @@ inc_yrs_plot <- inc1 %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -564,7 +564,7 @@ inc_yrs_plot1 <- inc1 %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -608,7 +608,7 @@ inc_yrs_plot2 <- inc1 %>%  # need to amend this bit of code to select the estima
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -657,7 +657,7 @@ inc_yrs_plot <- inc1 %>%  # need to amend this bit of code to select the estimat
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(incidence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -913,7 +913,7 @@ pp_yrs_plot <- prev_periodDEM %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(prevalence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -950,7 +950,7 @@ prev_yrs_plot1 <- prev_periodDEM  %>%  # need to amend this bit of code to selec
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(prevalence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -993,7 +993,7 @@ prev_yrs_plot2 <- prev_periodDEM %>%  # need to amend this bit of code to select
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(prevalence_start_date, format="%Y")) %>%
   as.data.frame()
 
@@ -1040,7 +1040,7 @@ prev_yrs_plot <- prev_periodDEM %>%  # need to amend this bit of code to select 
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "donepezil", "Donepezil")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "rivastigmine", "Rivastigmine")) %>%
   mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "galantamine", "Galantamine")) %>%
-  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyAntiDementiaDrugUser", "Any Dementia Drug")) %>%
+  mutate(outcome_cohort_name = replace(outcome_cohort_name, outcome_cohort_name == "anyantidementiadruguser", "Any Dementia Drug")) %>%
   mutate(time = format(prevalence_start_date, format="%Y")) %>%
   as.data.frame()
 
