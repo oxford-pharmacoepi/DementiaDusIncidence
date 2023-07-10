@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.2.1",
+    "Version": "4.2.3",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -116,27 +116,20 @@
     },
     "PatientProfiles": {
       "Package": "PatientProfiles",
-      "Version": "0.1.0",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "PatientProfiles",
-      "RemoteUsername": "oxford-pharmacoepi",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "484ed86520b7139a94d7af58bb1c064de9c5fe12",
-      "Hash": "a804e94b0f1fd1ce3221166e779edcd5",
+      "Version": "0.2.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "df4e9dcba5cc161c3a20190e10f9149a",
       "Requirements": [
         "CDMConnector",
         "DBI",
-        "SqlRender",
         "checkmate",
         "cli",
         "dplyr",
         "lubridate",
         "magrittr",
+        "pillar",
         "rlang",
-        "stringr",
-        "tibble",
         "tidyr"
       ]
     },

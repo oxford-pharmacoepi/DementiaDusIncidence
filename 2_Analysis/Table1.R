@@ -31,11 +31,11 @@ for(i in seq_along(inc_overall$outcome_cohort_id) ){
     rename("cohort_start_date" = "outcome_start_date")
   cdm$working_participants <- cdm$working_participants %>% 
     addDemographics(cdm) %>% 
-    flagCohortPresence(cdm = cdm,
+    addCohortIntersectFlag(cdm = cdm,
                        targetCohortTable = feature_disease_table_name,
                        window = c(-Inf, 0), 
                        nameStyle = "{cohort_name}") %>% 
-    flagCohortPresence(cdm = cdm,
+    addCohortIntersectFlag(cdm = cdm,
                        targetCohortTable = feature_medication_table_name,
                        window = c(-90, 0), 
                        nameStyle = "{cohort_name}") 
