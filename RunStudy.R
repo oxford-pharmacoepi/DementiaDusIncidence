@@ -3,6 +3,8 @@
 outcome_table_name <-paste0(outcome_table_stem,"_o")
 strata_table_name <-paste0(outcome_table_stem,"_strata")
 strata_table_name1 <-paste0(outcome_table_stem,"_strata1")
+strata_table_name1year <-paste0(outcome_table_stem,"_strata2")
+strata_table_name2year <-paste0(outcome_table_stem,"_strata3")
 feature_disease_table_name <-paste0(outcome_table_stem,"_disease")
 feature_medication_table_name <-paste0(outcome_table_stem,"_medication")
 
