@@ -64,10 +64,10 @@
     },
     "IncidencePrevalence": {
       "Package": "IncidencePrevalence",
-      "Version": "0.4.0",
+      "Version": "0.4.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "14b9acbb070bb8f933ab0e763fa7cce3",
+      "Hash": "66509f8af805249e93775a24bb0bab02",
       "Requirements": [
         "CDMConnector",
         "DBI",

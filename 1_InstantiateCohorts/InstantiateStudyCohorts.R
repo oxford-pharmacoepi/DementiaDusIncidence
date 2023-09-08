@@ -22,6 +22,7 @@ info(logger, "- got outcomes")
 
 # instantiate strata cohorts
 info(logger, "- getting strata definitions")
+
 strata_cohorts <- readCohortSet(here(
   "1_InstantiateCohorts",
   "StrataCohorts"
@@ -55,7 +56,49 @@ cdm <- generateCohortSet(cdm,
 
 #cohortCount(cdm$dementadruginc_strata1)
 
+#get other disease strata with different end of observation dates
+# dementia with end of study 1 years after diagnosis
+info(logger, "- getting strata updated definitions")
+strata_cohorts2 <- readCohortSet(here(
+  "1_InstantiateCohorts",
+  "StrataCohorts",
+  "dem1yr"
+))
+
+info(logger, "- getting strata updated updated")
+cdm <- generateCohortSet(cdm, 
+                         strata_cohorts2,
+                         name = strata_table_name1year,
+                         computeAttrition = TRUE,
+                         overwrite = TRUE
+)
+
+# dementia with end of study 2 years after diagnosis
+info(logger, "- getting strata updated definitions")
+strata_cohorts3 <- readCohortSet(here(
+  "1_InstantiateCohorts",
+  "StrataCohorts",
+  "dem2yr"
+))
+
+info(logger, "- getting strata updated updated")
+cdm <- generateCohortSet(cdm, 
+                         strata_cohorts3,
+                         name = strata_table_name2year,
+                         computeAttrition = TRUE,
+                         overwrite = TRUE
+)
+
+
+
+
 info(logger, "- got strata updated")
+
+
+
+
+
+
 
 
 
