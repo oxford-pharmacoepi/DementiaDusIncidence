@@ -21,7 +21,7 @@ library(PatientProfiles)
 library(tibble)
 
 # database metadata and connection details -----
-# The name/ acronym for the database (for CPRD GOLD please use "CPRDGOLD" and for SIDIAP use "SIDIAP" )
+# The name/ acronym for the database (for SIDIAP use "SIDIAP" and for IPCI please use "IPCI" in capitals)
 db.name<-"..."
 
 # Set output folder location -----
