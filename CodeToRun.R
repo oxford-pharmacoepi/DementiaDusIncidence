@@ -1,6 +1,6 @@
 # Manage project dependencies ------
 # the following will prompt you to install the various packages used in the study 
-install.packages("renv")
+#install.packages("renv")
 renv::activate()
 renv::restore()
 
