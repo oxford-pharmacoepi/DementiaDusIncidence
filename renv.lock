@@ -807,7 +807,7 @@
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "1.1.0",
+      "Version": "1.1.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "dc079ccd156cde8647360f473c1fa718",
@@ -848,7 +848,7 @@
     },
     "spatial": {
       "Package": "spatial",
-      "Version": "7.3-11",
+      "Version": "7.3-17",
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "f27a078d834614513608da2c08031130",
