@@ -16,7 +16,7 @@ if (db.name == "SIDIAP") {
   
 } else if (db.name == "IPCI") {
   
-  startdate =  as.Date("2007-12-31")
+  startdate =  as.Date("2006-12-31")
   enddate = as.Date("2020-12-31")
   
   } else {
